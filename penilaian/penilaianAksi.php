@@ -39,7 +39,7 @@ if (isset($_POST['id_alternatif'])) {
         // Koneksi ke database
         $koneksi = connectDB();
     
-        // Flag untuk menandai kesalahan dalam penyimpanan data
+         // Flag untuk menandai kesalahan dalam penyimpanan data
         $error_flag = false;
         $total_persentase = 0;
         $nilai_berbobot = 0;

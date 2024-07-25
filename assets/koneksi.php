@@ -3,9 +3,9 @@
 function connectDB()
 {
     $host = "localhost";
-    $username = "root";
-    $password = "";
-    $database = "musik";
+    $username = "sijuribi_musik";
+    $password = "&53AqTciT5x~";
+    $database = "sijuribi_musik";
 
     // Buat koneksi
     $koneksi = new mysqli($host, $username, $password, $database);

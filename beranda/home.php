@@ -32,19 +32,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['nama'])) {
                 <div class="container-beranda">
                     <!-- tombol menu -->
                     <nav class="menu">
-                        <div class="menu-row">
-                            <button class="menu-button" onclick="window.location.href='../kriteria/kriteriaView.php'">
-                                <span></span><span></span><span></span><span></span>
-                                <?php
-                                $query_kriteria = "SELECT COUNT(*) AS total_kriteria FROM kriteria";
-                                $result_kriteria = mysqli_query($koneksi, $query_kriteria);
-                                $row_kriteria = mysqli_fetch_assoc($result_kriteria);
-                                $total_kriteria = $row_kriteria['total_kriteria'];
-                                ?>
-                                <?php echo $total_kriteria; ?> Data Lagu
-                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                <i class="fa-solid fa-box"></i>
-                            </button>
+                        <div class="menu-row button-subkriteria">
                             <button class="menu-button" onclick="window.location.href='../subkriteria/subkriteriaView.php'">
                                 <span></span><span></span><span></span><span></span>
                                 <?php

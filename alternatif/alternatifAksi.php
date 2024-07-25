@@ -22,12 +22,13 @@ if (isset($_SESSION['id']) && isset($_SESSION['nama']) && $_SESSION['level'] !==
 
         <body></body>
         <?php
-
         // Uji jika tombol simpan di klik
         if (isset($_POST['bsimpan'])) {
             // Mengambil data dari form
             $nama_alternatif = $_POST['tnama'];
             $terakhir = $_POST['tterakhir'];
+            $musica_sacra = $_POST['tmusica_sacra'];
+            $traditional_gospel = $_POST['ttraditional_gospel'];
 
             // Koneksi ke database
             $koneksi = connectDB();
@@ -37,8 +38,6 @@ if (isset($_SESSION['id']) && isset($_SESSION['nama']) && $_SESSION['level'] !==
             $stmtCheck->bind_param("ss", $nama_alternatif, $terakhir);
             $stmtCheck->execute();
             $resultCheck = $stmtCheck->get_result();
-
-
 
             if ($resultCheck->num_rows > 0) {
                 // Jika nama alternatif sudah ada, tampilkan pesan kesalahan
@@ -55,11 +54,14 @@ if (isset($_SESSION['id']) && isset($_SESSION['nama']) && $_SESSION['level'] !==
                 <?php
             } else {
                 // Persiapan simpan data baru
-                $simpan = "INSERT INTO alternatif (nama_alternatif, periode_penilaian)
-                        VALUES ('$nama_alternatif', '$terakhir')";
+                $simpan = "INSERT INTO alternatif (nama_alternatif, periode_penilaian, musica_sacra, traditional_gospel)
+                   VALUES (?, ?, ?, ?)";
 
                 // Menjalankan query
-                if ($koneksi->query($simpan) === TRUE) {
+                $stmt = $koneksi->prepare($simpan);
+                $stmt->bind_param("ssss", $nama_alternatif, $terakhir, $musica_sacra, $traditional_gospel);
+
+                if ($stmt->execute()) {
                 ?>
                     <!-- Jika simpan sukses -->
                     <script>
@@ -86,34 +88,39 @@ if (isset($_SESSION['id']) && isset($_SESSION['nama']) && $_SESSION['level'] !==
                     </script>
                 <?php
                 }
+                $stmt->close();
             }
 
             // Menutup koneksi ke database
             $koneksi->close();
         } else {
-            // Jika form tidak disubmit, kembali ke halaman sebelumnya atau tampilkan pesan error
         }
 
-        //Uji jika tombol ubah di klik
+        // Uji jika tombol ubah di klik
         if (isset($_POST['bubah'])) {
             // Mengambil data dari form
             $id_alternatif = $_POST['id_alternatif'];
             $nama_alternatif = $_POST['tnama'];
             $terakhir = $_POST['tterakhir'];
+            $musica_sacra = $_POST['tmusica_sacra'];
+            $traditional_gospel = $_POST['ttraditional_gospel'];
 
             // Koneksi ke database
             $koneksi = connectDB();
 
-            //Persiapan ubah data
-            // Query untuk mengubah data ke dalam tabel kriteria
+            // Persiapan ubah data
             $ubah = "UPDATE alternatif SET 
-                                    nama_alternatif = '$nama_alternatif',
-                                    periode_penilaian ='$terakhir'
-                                WHERE id_alternatif = '$id_alternatif'
-                                    ";
+                        nama_alternatif = ?,
+                        periode_penilaian = ?,
+                        musica_sacra = ?,
+                        traditional_gospel = ?
+                    WHERE id_alternatif = ?";
 
             // Menjalankan query
-            if ($koneksi->query($ubah) === TRUE) {
+            $stmt = $koneksi->prepare($ubah);
+            $stmt->bind_param("sssss", $nama_alternatif, $terakhir, $musica_sacra, $traditional_gospel, $id_alternatif);
+
+            if ($stmt->execute()) {
                 ?>
                 <!-- Jika ubah sukses -->
                 <script>
@@ -140,12 +147,12 @@ if (isset($_SESSION['id']) && isset($_SESSION['nama']) && $_SESSION['level'] !==
                 </script>
             <?php
             }
+            $stmt->close();
+
             // Menutup koneksi ke database
             $koneksi->close();
         } else {
-            // Jika form tidak disubmit, kembali ke halaman sebelumnya atau tampilkan pesan error
         }
-
         //Uji jika tombol hapus di klik
         if (isset($_POST['bhapus'])) {
             // Mengambil data dari form

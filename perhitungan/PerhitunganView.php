@@ -6,7 +6,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['nama']) && $_SESSION['level'] !==
     require_once "../assets/koneksi.php";
     $koneksi = connectDB(); // Menggunakan fungsi connectDB() untuk mendapatkan koneksi database
 
-    // Memanggil file perhitunganAksi.php
+    // Memanggil file PerhitunganAksi.php
     require_once "PerhitunganAksi.php";
 
     // Mendapatkan id_user dari sesi

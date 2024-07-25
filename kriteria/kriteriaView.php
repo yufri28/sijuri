@@ -67,11 +67,11 @@ if (isset($_SESSION['id']) && isset($_SESSION['nama'])) {
         <?php include "../assets/basic/sidebar.php"; ?>
         <!-- START SECTION -->
         <section class="home-section">
-            <div class="text">Data Lagu
+            <div class="text">Data kategori
                 <div class="container-kriteria">
                     <div class="card mt-4">
                         <div class="card-header fa-regular fa-rectangle-list">
-                            <span><b>Daftar Data Lagu</b></span>
+                            <span><b>Daftar Data kategori</b></span>
                         </div>
                         <div class="card-body">
                             <!-- Button trigger modal -->
@@ -87,9 +87,8 @@ if (isset($_SESSION['id']) && isset($_SESSION['nama'])) {
                                     <thead>
                                         <tr>
                                             <th style="text-align: center;">No</th>
-                                            <th style="text-align: center;">Kode Lagu</th>
-                                            <th style="text-align: center; width: 500px;">Nama Lagu</th>
-                                            <th style="text-align: center; width: 310px;">Keterangan Lagu</th>
+                                            <th style="text-align: center; width: 580px;">Nama Kategori</th>
+                                            <th style="text-align: center; width: 310px;">Keterangan Kategori</th>
                                             <?php if ($_SESSION['level'] == 'admin') : ?>
                                                 <th style="text-align: center; width: 130px;">Aksi</th>
                                             <?php endif; ?>
@@ -102,7 +101,6 @@ if (isset($_SESSION['id']) && isset($_SESSION['nama'])) {
                                         foreach ($kriteria as $kriteria_item) : ?>
                                             <tr>
                                                 <td style="text-align: center;"><?= $no++ ?></td>
-                                                <td style="text-align: center;"><?= $kriteria_item['kode_kriteria'] ?></td>
                                                 <td style="text-align: left;"><?= $kriteria_item['nama_kriteria'] ?></td>
                                                 <td style="text-align: left;"><?= $kriteria_item['ket_kriteria'] ?></td>
                                                 <?php if ($_SESSION['level'] == 'admin') : ?>
@@ -118,22 +116,19 @@ if (isset($_SESSION['id']) && isset($_SESSION['nama'])) {
                                                 <div class="modal-dialog">
                                                     <div class="modal-content">
                                                         <div class="modal-header">
-                                                            <h5 class="modal-title" id="staticBackdropLabel">Ubah Data Lagu</h5>
+                                                            <h5 class="modal-title" id="staticBackdropLabel">Ubah Data Kategori</h5>
                                                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                         </div>
                                                         <form class="row g-3" method="POST" action="kriteriaAksi.php">
                                                             <input type="hidden" name="id_kriteria" value="<?= $kriteria_item['id_kriteria'] ?>">
                                                             <div class="row g-3 modal-body">
+                                                            <input type="hidden" name="tkode" class="form-control" value="<?= $kriteria_item['kode_kriteria'] ?>" readonly style="background-color: #f0f0f0;">
                                                                 <div class="col-md-6">
-                                                                    <label for="inputKode" class="form-label">Kode Lagu</label>
-                                                                    <input type="text" name="tkode" class="form-control" value="<?= $kriteria_item['kode_kriteria'] ?>" readonly style="background-color: #f0f0f0;">
-                                                                </div>
-                                                                <div class="col-md-6">
-                                                                    <label for="inputNama" class="form-label">Nama Lagu</label>
+                                                                    <label for="inputNama" class="form-label">Nama Kategori</label>
                                                                     <input type="text" name="tnama" value="<?= $kriteria_item['nama_kriteria'] ?>" pattern="[A-Z][a-zA-Z ]{1,}$" title="Berawalan dengan huruf kapital dan tidak menggunakan karakter lain" class="form-control" id="inputNama" required oninvalid="this.setCustomValidity('Berawalan dengan huruf kapital dan tidak menggunakan karakter lain')" onchange="try{setCustomValidity('')}catch(e){}" autocomplete="off">
                                                                 </div>
                                                                 <div class="col-md-6">
-                                                                    <label for="inputKet" class="form-label">Keterangan Lagu</label>
+                                                                    <label for="inputKet" class="form-label">Keterangan Kategori</label>
                                                                     <textarea name="tket" class="form-control ket-kriteria" id="inputKet" title="Silakan diisi" required onchange="try{setCustomValidity('')}catch(e){}" autocomplete="off"><?= $kriteria_item['ket_kriteria'] ?></textarea>
                                                                 </div>
                                                             </div>
@@ -178,7 +173,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['nama'])) {
                                 </table>
                             <?php else : ?>
                                 <div class="alert alert-warning" role="alert">
-                                    Tidak ada data lagu.
+                                    Tidak ada data kategori.
                                 </div>
                             <?php endif; ?>
 
@@ -187,21 +182,18 @@ if (isset($_SESSION['id']) && isset($_SESSION['nama'])) {
                                 <div class="modal-dialog">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h5 class="modal-title" id="staticBackdropLabel">Tambah Data Lagu</h5>
+                                            <h5 class="modal-title" id="staticBackdropLabel">Tambah Data Kategori</h5>
                                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                         </div>
                                         <form id="formTambahKriteria" class="row g-3" method="POST" action="kriteriaAksi.php">
                                             <div class="row g-3 modal-body">
+                                            <input type="hidden" name="tkode" class="form-control" value="<?= getNextKodeKriteria($koneksi) ?>" readonly style="background-color: #f0f0f0;">
                                                 <div class="col-md-6">
-                                                    <label for="inputKode" class="form-label">Kode Lagu</label>
-                                                    <input type="text" name="tkode" class="form-control" value="<?= getNextKodeKriteria($koneksi) ?>" readonly style="background-color: #f0f0f0;">
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <label for="inputNama" class="form-label">Nama Lagu</label>
+                                                    <label for="inputNama" class="form-label">Nama Kategori</label>
                                                     <input type="text" name="tnama" pattern="[A-Z][a-zA-Z0-9 ]{1,}$" title="Berawalan dengan huruf kapital dan tidak menggunakan karakter lain" class="form-control" id="inputNama" required oninvalid="this.setCustomValidity('Berawalan dengan huruf kapital dan tidak menggunakan karakter lain')" onchange="try{setCustomValidity('')}catch(e){}" autocomplete="off">
                                                 </div>
                                                 <div class="col-md-6">
-                                                    <label for="inputKet" class="form-label">Keterangan Lagu</label>
+                                                    <label for="inputKet" class="form-label">Keterangan Kategori</label>
                                                     <textarea name="tket" class="form-control ket-kriteria" id="inputKet" title="Silakan diisi" required oninvalid="this.setCustomValidity('Keterangan kriteria harus diisi')" onchange="try{setCustomValidity('')}catch(e){}" autocomplete="off"></textarea>
                                                 </div>
                                             </div>

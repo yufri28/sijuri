@@ -1,0 +1,169 @@
+[22-Jul-2024 00:40:12 UTC] PHP Fatal error:  Uncaught Error: Call to undefined method mysqli_stmt::get_result() in /home/sijuribi/public_html/penilaian/penilaianView.php:181
+Stack trace:
+#0 {main}
+  thrown in /home/sijuribi/public_html/penilaian/penilaianView.php on line 181
+[22-Jul-2024 00:40:19 UTC] PHP Fatal error:  Uncaught Error: Call to undefined method mysqli_stmt::get_result() in /home/sijuribi/public_html/penilaian/penilaianView.php:181
+Stack trace:
+#0 {main}
+  thrown in /home/sijuribi/public_html/penilaian/penilaianView.php on line 181
+[22-Jul-2024 00:40:21 UTC] PHP Fatal error:  Uncaught Error: Call to undefined method mysqli_stmt::get_result() in /home/sijuribi/public_html/penilaian/penilaianView.php:181
+Stack trace:
+#0 {main}
+  thrown in /home/sijuribi/public_html/penilaian/penilaianView.php on line 181
+[22-Jul-2024 00:40:26 UTC] PHP Fatal error:  Uncaught Error: Call to undefined method mysqli_stmt::get_result() in /home/sijuribi/public_html/penilaian/penilaianView.php:181
+Stack trace:
+#0 {main}
+  thrown in /home/sijuribi/public_html/penilaian/penilaianView.php on line 181
+[22-Jul-2024 00:42:10 UTC] PHP Fatal error:  Uncaught Error: Call to undefined method mysqli_stmt::get_result() in /home/sijuribi/public_html/penilaian/penilaianView.php:181
+Stack trace:
+#0 {main}
+  thrown in /home/sijuribi/public_html/penilaian/penilaianView.php on line 181
+[22-Jul-2024 00:42:24 UTC] PHP Fatal error:  Uncaught Error: Call to undefined method mysqli_stmt::get_result() in /home/sijuribi/public_html/penilaian/penilaianView.php:181
+Stack trace:
+#0 {main}
+  thrown in /home/sijuribi/public_html/penilaian/penilaianView.php on line 181
+[22-Jul-2024 00:42:25 UTC] PHP Fatal error:  Uncaught Error: Call to undefined method mysqli_stmt::get_result() in /home/sijuribi/public_html/penilaian/penilaianView.php:181
+Stack trace:
+#0 {main}
+  thrown in /home/sijuribi/public_html/penilaian/penilaianView.php on line 181
+[22-Jul-2024 00:42:31 UTC] PHP Fatal error:  Uncaught Error: Call to undefined method mysqli_stmt::get_result() in /home/sijuribi/public_html/penilaian/penilaianView.php:181
+Stack trace:
+#0 {main}
+  thrown in /home/sijuribi/public_html/penilaian/penilaianView.php on line 181
+[22-Jul-2024 00:42:41 UTC] PHP Fatal error:  Uncaught Error: Call to undefined method mysqli_stmt::get_result() in /home/sijuribi/public_html/penilaian/penilaianView.php:181
+Stack trace:
+#0 {main}
+  thrown in /home/sijuribi/public_html/penilaian/penilaianView.php on line 181
+[22-Jul-2024 00:42:43 UTC] PHP Fatal error:  Uncaught Error: Call to undefined method mysqli_stmt::get_result() in /home/sijuribi/public_html/penilaian/penilaianView.php:181
+Stack trace:
+#0 {main}
+  thrown in /home/sijuribi/public_html/penilaian/penilaianView.php on line 181
+[22-Jul-2024 00:59:32 UTC] PHP Fatal error:  Uncaught Error: Call to undefined method mysqli_stmt::get_result() in /home/sijuribi/public_html/penilaian/penilaianView.php:181
+Stack trace:
+#0 {main}
+  thrown in /home/sijuribi/public_html/penilaian/penilaianView.php on line 181
+[22-Jul-2024 00:59:34 UTC] PHP Fatal error:  Uncaught Error: Call to undefined method mysqli_stmt::get_result() in /home/sijuribi/public_html/penilaian/penilaianView.php:181
+Stack trace:
+#0 {main}
+  thrown in /home/sijuribi/public_html/penilaian/penilaianView.php on line 181
+[22-Jul-2024 01:00:23 UTC] PHP Fatal error:  Uncaught Error: Call to undefined method mysqli_stmt::get_result() in /home/sijuribi/public_html/penilaian/penilaianView.php:181
+Stack trace:
+#0 {main}
+  thrown in /home/sijuribi/public_html/penilaian/penilaianView.php on line 181
+[22-Jul-2024 01:15:06 UTC] PHP Fatal error:  Uncaught Error: Call to undefined method mysqli_stmt::get_result() in /home/sijuribi/public_html/penilaian/penilaianView.php:181
+Stack trace:
+#0 {main}
+  thrown in /home/sijuribi/public_html/penilaian/penilaianView.php on line 181
+[22-Jul-2024 01:15:57 UTC] PHP Fatal error:  Uncaught Error: Call to undefined method mysqli_stmt::get_result() in /home/sijuribi/public_html/penilaian/penilaianView.php:181
+Stack trace:
+#0 {main}
+  thrown in /home/sijuribi/public_html/penilaian/penilaianView.php on line 181
+[22-Jul-2024 01:20:33 UTC] PHP Fatal error:  Uncaught Error: Call to undefined method mysqli_stmt::get_result() in /home/sijuribi/public_html/penilaian/penilaianView.php:181
+Stack trace:
+#0 {main}
+  thrown in /home/sijuribi/public_html/penilaian/penilaianView.php on line 181
+[22-Jul-2024 01:23:09 UTC] PHP Fatal error:  Uncaught Error: Call to undefined method mysqli_stmt::get_result() in /home/sijuribi/public_html/penilaian/penilaianView.php:181
+Stack trace:
+#0 {main}
+  thrown in /home/sijuribi/public_html/penilaian/penilaianView.php on line 181
+[22-Jul-2024 01:23:16 UTC] PHP Fatal error:  Uncaught Error: Call to undefined method mysqli_stmt::get_result() in /home/sijuribi/public_html/penilaian/penilaianView.php:181
+Stack trace:
+#0 {main}
+  thrown in /home/sijuribi/public_html/penilaian/penilaianView.php on line 181
+[22-Jul-2024 01:25:42 UTC] PHP Fatal error:  Uncaught Error: Call to undefined method mysqli_stmt::get_result() in /home/sijuribi/public_html/penilaian/penilaianView.php:181
+Stack trace:
+#0 {main}
+  thrown in /home/sijuribi/public_html/penilaian/penilaianView.php on line 181
+[22-Jul-2024 01:28:03 UTC] PHP Fatal error:  Uncaught Error: Call to undefined method mysqli_stmt::get_result() in /home/sijuribi/public_html/penilaian/penilaianView.php:181
+Stack trace:
+#0 {main}
+  thrown in /home/sijuribi/public_html/penilaian/penilaianView.php on line 181
+[22-Jul-2024 01:28:06 UTC] PHP Fatal error:  Uncaught Error: Call to undefined method mysqli_stmt::get_result() in /home/sijuribi/public_html/penilaian/penilaianView.php:181
+Stack trace:
+#0 {main}
+  thrown in /home/sijuribi/public_html/penilaian/penilaianView.php on line 181
+[22-Jul-2024 01:28:11 UTC] PHP Fatal error:  Uncaught Error: Call to undefined method mysqli_stmt::get_result() in /home/sijuribi/public_html/penilaian/penilaianView.php:181
+Stack trace:
+#0 {main}
+  thrown in /home/sijuribi/public_html/penilaian/penilaianView.php on line 181
+[22-Jul-2024 01:28:30 UTC] PHP Fatal error:  Uncaught Error: Call to undefined method mysqli_stmt::get_result() in /home/sijuribi/public_html/penilaian/penilaianView.php:181
+Stack trace:
+#0 {main}
+  thrown in /home/sijuribi/public_html/penilaian/penilaianView.php on line 181
+[22-Jul-2024 01:29:32 UTC] PHP Fatal error:  Uncaught Error: Call to undefined method mysqli_stmt::get_result() in /home/sijuribi/public_html/penilaian/penilaianView.php:181
+Stack trace:
+#0 {main}
+  thrown in /home/sijuribi/public_html/penilaian/penilaianView.php on line 181
+[22-Jul-2024 01:29:35 UTC] PHP Fatal error:  Uncaught Error: Call to undefined method mysqli_stmt::get_result() in /home/sijuribi/public_html/penilaian/penilaianView.php:181
+Stack trace:
+#0 {main}
+  thrown in /home/sijuribi/public_html/penilaian/penilaianView.php on line 181
+[22-Jul-2024 01:30:51 UTC] PHP Fatal error:  Uncaught Error: Call to undefined method mysqli_stmt::get_result() in /home/sijuribi/public_html/penilaian/penilaianView.php:181
+Stack trace:
+#0 {main}
+  thrown in /home/sijuribi/public_html/penilaian/penilaianView.php on line 181
+[22-Jul-2024 01:31:58 UTC] PHP Fatal error:  Uncaught Error: Call to undefined method mysqli_stmt::get_result() in /home/sijuribi/public_html/penilaian/penilaianView.php:181
+Stack trace:
+#0 {main}
+  thrown in /home/sijuribi/public_html/penilaian/penilaianView.php on line 181
+[22-Jul-2024 01:47:56 UTC] PHP Fatal error:  Uncaught Error: Call to undefined method mysqli_stmt::get_result() in /home/sijuribi/public_html/penilaian/penilaianView.php:181
+Stack trace:
+#0 {main}
+  thrown in /home/sijuribi/public_html/penilaian/penilaianView.php on line 181
+[22-Jul-2024 01:47:58 UTC] PHP Fatal error:  Uncaught Error: Call to undefined method mysqli_stmt::get_result() in /home/sijuribi/public_html/penilaian/penilaianView.php:181
+Stack trace:
+#0 {main}
+  thrown in /home/sijuribi/public_html/penilaian/penilaianView.php on line 181
+[22-Jul-2024 01:48:04 UTC] PHP Fatal error:  Uncaught Error: Call to undefined method mysqli_stmt::get_result() in /home/sijuribi/public_html/penilaian/penilaianView.php:181
+Stack trace:
+#0 {main}
+  thrown in /home/sijuribi/public_html/penilaian/penilaianView.php on line 181
+[22-Jul-2024 01:49:25 UTC] PHP Fatal error:  Uncaught Error: Call to undefined method mysqli_stmt::get_result() in /home/sijuribi/public_html/penilaian/penilaianView.php:181
+Stack trace:
+#0 {main}
+  thrown in /home/sijuribi/public_html/penilaian/penilaianView.php on line 181
+[22-Jul-2024 01:49:26 UTC] PHP Fatal error:  Uncaught Error: Call to undefined method mysqli_stmt::get_result() in /home/sijuribi/public_html/penilaian/penilaianView.php:181
+Stack trace:
+#0 {main}
+  thrown in /home/sijuribi/public_html/penilaian/penilaianView.php on line 181
+[22-Jul-2024 01:50:13 UTC] PHP Fatal error:  Uncaught Error: Call to undefined method mysqli_stmt::get_result() in /home/sijuribi/public_html/penilaian/penilaianView.php:181
+Stack trace:
+#0 {main}
+  thrown in /home/sijuribi/public_html/penilaian/penilaianView.php on line 181
+[22-Jul-2024 01:50:15 UTC] PHP Fatal error:  Uncaught Error: Call to undefined method mysqli_stmt::get_result() in /home/sijuribi/public_html/penilaian/penilaianView.php:181
+Stack trace:
+#0 {main}
+  thrown in /home/sijuribi/public_html/penilaian/penilaianView.php on line 181
+[22-Jul-2024 01:50:44 UTC] PHP Fatal error:  Uncaught Error: Call to undefined method mysqli_stmt::get_result() in /home/sijuribi/public_html/penilaian/penilaianView.php:181
+Stack trace:
+#0 {main}
+  thrown in /home/sijuribi/public_html/penilaian/penilaianView.php on line 181
+[22-Jul-2024 01:50:47 UTC] PHP Fatal error:  Uncaught Error: Call to undefined method mysqli_stmt::get_result() in /home/sijuribi/public_html/penilaian/penilaianView.php:181
+Stack trace:
+#0 {main}
+  thrown in /home/sijuribi/public_html/penilaian/penilaianView.php on line 181
+[22-Jul-2024 01:50:48 UTC] PHP Fatal error:  Uncaught Error: Call to undefined method mysqli_stmt::get_result() in /home/sijuribi/public_html/penilaian/penilaianView.php:181
+Stack trace:
+#0 {main}
+  thrown in /home/sijuribi/public_html/penilaian/penilaianView.php on line 181
+[22-Jul-2024 01:54:34 UTC] PHP Fatal error:  Uncaught Error: Call to undefined method mysqli_stmt::get_result() in /home/sijuribi/public_html/penilaian/penilaianView.php:181
+Stack trace:
+#0 {main}
+  thrown in /home/sijuribi/public_html/penilaian/penilaianView.php on line 181
+[22-Jul-2024 01:58:33 UTC] PHP Parse error:  syntax error, unexpected token "if" in /home/sijuribi/public_html/penilaian/penilaianView.php on line 186
+[22-Jul-2024 01:58:48 UTC] PHP Fatal error:  Uncaught Error: Call to a member function fetch_assoc() on bool in /home/sijuribi/public_html/penilaian/penilaianView.php:183
+Stack trace:
+#0 {main}
+  thrown in /home/sijuribi/public_html/penilaian/penilaianView.php on line 183
+[22-Jul-2024 01:58:52 UTC] PHP Fatal error:  Uncaught Error: Call to a member function fetch_assoc() on bool in /home/sijuribi/public_html/penilaian/penilaianView.php:183
+Stack trace:
+#0 {main}
+  thrown in /home/sijuribi/public_html/penilaian/penilaianView.php on line 183
+[22-Jul-2024 01:59:28 UTC] PHP Fatal error:  Uncaught Error: Call to undefined method mysqli_stmt::get_result() in /home/sijuribi/public_html/penilaian/penilaianView.php:181
+Stack trace:
+#0 {main}
+  thrown in /home/sijuribi/public_html/penilaian/penilaianView.php on line 181
+[22-Jul-2024 02:00:04 UTC] PHP Fatal error:  Uncaught Error: Call to undefined method mysqli_stmt::get_result() in /home/sijuribi/public_html/penilaian/penilaianView.php:181
+Stack trace:
+#0 {main}
+  thrown in /home/sijuribi/public_html/penilaian/penilaianView.php on line 181

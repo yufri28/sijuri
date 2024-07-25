@@ -30,14 +30,14 @@ a:hover {
 .wrapper {
   width: 100%;
   display: flex;
-  justify-content: flex-end; /* Geser semua elemen ke kanan */
+  justify-content: center;
   align-items: center;
   min-height: 100vh;
   background-color: rgba(0, 0, 0, 0.2);
 }
 
 .login-box {
-  margin-right: 20px; /* Jarak antar elemen, atur sesuai kebutuhan */
+  margin-right: 20px;
 }
 .login-definisi {
   position: relative;
@@ -46,14 +46,22 @@ a:hover {
   border-top: 2px solid var(--primary-color);
   border-bottom: 2px solid var(--primary-color);
   border-left: 2px solid var(--primary-color);
-  border-top-left-radius: 15px;
-  border-bottom-left-radius: 15px;
+  border-right: 2px solid var(--primary-color);
+  border-radius: 15px;
   padding: 3em 2.5em 3em 2.5em;
   color: var(--second-color);
   box-shadow: 0px 0px 10px 2px rgba(0, 0, 0, 0.3);
 }
 .login-definisi p {
   font-size: 20px;
+}
+.small-spacing {
+  line-height: 0.2;
+}
+.garamond-font {
+  font-family: "Garamond", serif;
+  font-weight: bold;
+  text-align: center;
 }
 .login-box {
   position: relative;
@@ -65,7 +73,12 @@ a:hover {
   color: var(--second-color);
   box-shadow: 0px 0px 10px 2px rgba(0, 0, 0, 0.3);
 }
-
+.modal-bodylogin .input-field {
+  color: black;
+}
+.modal-dialog {
+  margin-top: 150px;
+}
 .login-header {
   position: absolute;
   top: 0;
@@ -75,9 +88,12 @@ a:hover {
   align-items: center;
   justify-content: center;
   background-color: var(--primary-color);
-  width: 140px;
-  height: 70px;
+  width: 120px;
+  height: 40px;
   border-radius: 0 0 20px 20px;
+  font-family: "Georgia", serif;
+  font-weight: bold;
+  font-size: 20px;
 }
 .login-header span {
   font-size: 30px;
@@ -453,8 +469,8 @@ input:valid ~ .show-hide i {
   background-attachment: fixed;
 }
 .menu {
-  margin-top: 170px;
-  margin-left: 165px;
+  margin-top: 60px;
+  margin-left: 125px;
 }
 .menu-row {
   text-align: center;
@@ -510,6 +526,11 @@ input:valid ~ .show-hide i {
 }
 .menu-button span:nth-child(4) {
   --n: 4;
+}
+
+.button-subkriteria {
+  margin-left: 150px;
+  margin-top: 160px;
 }
 /* ==== END BERANDA VIEW ==== */
 
@@ -584,6 +605,12 @@ th {
 }
 .small-column2 {
   width: 160px;
+}
+.judullagu {
+  display: inline-block;
+  font-size: 14px;
+  position: relative;
+  top: -25px;
 }
 /* ==== END PENILAIAN VIEW ==== */
 

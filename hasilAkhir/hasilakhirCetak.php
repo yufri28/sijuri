@@ -30,6 +30,15 @@ if (isset($_SESSION['id']) && isset($_SESSION['nama'])) {
             // Mendapatkan data pengguna (users)
             $users = getUser($koneksi);
 
+            // Mengambil data juri dari database
+            $sql_juri = "SELECT nama_lengkap FROM user WHERE level = 'juri'";
+            $result_juri = $koneksi->query($sql_juri);
+
+            $juri_list = [];
+            while ($row_juri = $result_juri->fetch_assoc()) {
+                $juri_list[] = $row_juri['nama_lengkap'];
+            }
+
             // Load TCPDF library
             require_once('tcpdf/tcpdf.php');
 
@@ -78,8 +87,8 @@ if (isset($_SESSION['id']) && isset($_SESSION['nama'])) {
             $pdf->Cell(0, 10, 'Tanggal: ' . $tanggal, 0, 0, 'C');
 
             // Tambahkan garis di bawah judul dan teks periode, perpanjang ke kanan
-            $pdf->SetXY(5, 19); // Adjust the Y coordinate as needed
-            $pdf->Cell(285, 0, '', 'B', 1, 'C'); // Adjust the width to extend the line to the right
+            $pdf->SetXY(5, 19);
+            $pdf->Cell(285, 0, '', 'B', 1, 'C');
 
             // Set posisi X dan Y untuk menempatkan tabel di tengah halaman
             $pdf->SetXY(26, 30);
@@ -142,6 +151,41 @@ if (isset($_SESSION['id']) && isset($_SESSION['nama'])) {
             // Tulis tabel ke halaman
             $pdf->writeHTML($html, true, false, true, false, '');
 
+            // Menambahkan bagian tanda tangan
+            $pdf->Ln(5); // Jarak sebelum bagian tanda tangan
+            $pdf->SetFont('helvetica', 'B', 12);
+            $pdf->Cell(0, 10, 'Mengetahui:', 0, 1, 'C');
+            
+            // Tabel tanda tangan tanpa garis
+            $pdf->SetFont('helvetica', '', 11);
+            $pdf->Ln(5); // Jarak sebelum tabel tanda tangan
+
+            // Membuat HTML untuk tabel tanda tangan
+            $html_tanda_tangan = '<table cellpadding="5" cellspacing="0" style="width: 100%; text-align: center;">
+                <tr>';
+
+            // Menambahkan juri ke tabel
+            $count = 0;
+            foreach ($juri_list as $index => $nama_juri) {
+                // Jika sudah ada 5 juri di baris, buat baris baru
+                if ($index % 5 == 0 && $index > 0) {
+                    $html_tanda_tangan .= '</tr><tr>';
+                }
+                $juri_number = $index + 1;
+                $html_tanda_tangan .= '<td style="width: 20%;">Juri ' . $juri_number . '<br><br><br><br>(' . htmlspecialchars($nama_juri) . ')</td>';
+                $count++;
+            }
+
+            // Menambahkan sel kosong jika baris terakhir kurang dari 5 juri
+            if ($count % 5 != 0) {
+                $html_tanda_tangan .= str_repeat('<td style="width: 20%;"></td>', 5 - ($count % 5));
+            }
+
+            $html_tanda_tangan .= '</tr></table>';
+
+            // Tulis tabel tanda tangan ke halaman PDF
+            $pdf->writeHTML($html_tanda_tangan, true, false, true, false, '');
+
             // Tampilkan file PDF dalam browser
             $pdf->Output('Laporan Hasil Akhir Penilaian.pdf', 'I');
 
@@ -159,3 +203,4 @@ if (isset($_SESSION['id']) && isset($_SESSION['nama'])) {
     header("Location: ../index.php");
     exit();
 }
+?>

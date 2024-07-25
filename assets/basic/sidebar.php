@@ -34,13 +34,13 @@ if (isset($_SESSION['id']) && isset($_SESSION['nama'])) {
                 </a>
                 <span class="tooltip">Beranda</span>
             </li>
-            <li>
+            <!-- <li>
                 <a href="../kriteria/kriteriaView.php">
                     <i class="fa-solid fa-box"></i>
-                    <span class="links_name">Data Lagu</span>
+                    <span class="links_name">Data Kategori</span>
                 </a>
-                <span class="tooltip">Data Lagu</span>
-            </li>
+                <span class="tooltip">Data Kategori</span>
+            </li> -->
             <li>
                 <a href="../subkriteria/subkriteriaView.php">
                     <i class="fa-solid fa-boxes-stacked"></i>
@@ -73,7 +73,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['nama'])) {
                     <span class="tooltip">Data Penilaian</span>
                 </li>
                 <li>
-                    <a href="../perhitungan/perhitunganView.php">
+                    <a href="../perhitungan/PerhitunganView.php">
                         <i class="fa-solid fa-calculator"></i>
                         <span class="links_name">Data Perhitungan</span>
                     </a>
