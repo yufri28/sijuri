@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 25 Sep 2024 pada 16.57
+-- Waktu pembuatan: 25 Sep 2024 pada 17.13
 -- Versi server: 10.4.28-MariaDB
 -- Versi PHP: 8.0.28
 
@@ -112,60 +112,6 @@ CREATE TABLE `penilaian` (
   `nilai_akhir` float NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Dumping data untuk tabel `penilaian`
---
-
-INSERT INTO `penilaian` (`id_penilaian`, `id`, `id_alternatif`, `id_kriteria`, `subkriteria_id`, `nilai`, `komentar`, `nilai_akhir`) VALUES
-(25, 2, 53, 2, 1, 80.4, 'Oke', 86.3),
-(26, 2, 53, 2, 2, 90, 'Oke', 86.3),
-(27, 2, 53, 2, 3, 70, 'Oke', 86.3),
-(28, 2, 53, 2, 4, 92, 'Oke', 86.3),
-(29, 2, 53, 4, 1, 92, 'Bagus, kembangkan.', 86.3),
-(30, 2, 53, 4, 2, 98, 'Bagus, kembangkan.', 86.3),
-(31, 2, 53, 4, 3, 87, 'Bagus, kembangkan.', 86.3),
-(32, 2, 53, 4, 4, 81, 'Bagus, kembangkan.', 86.3),
-(33, 2, 71, 2, 1, 34, 'Smq', 48.25),
-(34, 2, 71, 2, 2, 65, 'Smq', 48.25),
-(35, 2, 71, 2, 3, 25, 'Smq', 48.25),
-(36, 2, 71, 2, 4, 63, 'Smq', 48.25),
-(37, 2, 71, 4, 1, 45, 'Fs', 48.25),
-(38, 2, 71, 4, 2, 64, 'Fs', 48.25),
-(39, 2, 71, 4, 3, 24, 'Fs', 48.25),
-(40, 2, 71, 4, 4, 66, 'Fs', 48.25),
-(49, 2, 73, 2, 1, 45.7, '', 33.0375),
-(50, 2, 73, 2, 2, 85.4, '', 33.0375),
-(51, 2, 73, 2, 3, 3, '', 33.0375),
-(52, 2, 73, 2, 4, 5, '', 33.0375),
-(53, 2, 73, 4, 1, 67, '', 33.0375),
-(54, 2, 73, 4, 2, 7, '', 33.0375),
-(55, 2, 73, 4, 3, 45.2, '', 33.0375),
-(56, 2, 73, 4, 4, 6, '', 33.0375),
-(57, 2, 72, 2, 1, 73.22, 'Keren', 48.4837),
-(58, 2, 72, 2, 2, 34.4, 'Keren', 48.4837),
-(59, 2, 72, 2, 3, 23.4, 'Keren', 48.4837),
-(60, 2, 72, 2, 4, 55, 'Keren', 48.4837),
-(61, 2, 72, 4, 1, 45.3, 'Bagus sekali.', 48.4837),
-(62, 2, 72, 4, 2, 24.55, 'Bagus sekali.', 48.4837),
-(63, 2, 72, 4, 3, 55, 'Bagus sekali.', 48.4837),
-(64, 2, 72, 4, 4, 77, 'Bagus sekali.', 48.4837),
-(65, 4, 53, 2, 1, 90, 'mantap', 46.4375),
-(66, 4, 53, 2, 2, 30, 'mantap', 46.4375),
-(67, 4, 53, 2, 3, 3, 'mantap', 46.4375),
-(68, 4, 53, 2, 4, 4.5, 'mantap', 46.4375),
-(69, 4, 53, 4, 1, 34, 'Oke bagus', 46.4375),
-(70, 4, 53, 4, 2, 56, 'Oke bagus', 46.4375),
-(71, 4, 53, 4, 3, 66, 'Oke bagus', 46.4375),
-(72, 4, 53, 4, 4, 88, 'Oke bagus', 46.4375),
-(73, 4, 71, 2, 1, 90.2, '', 56.025),
-(74, 4, 71, 2, 2, 90, '', 56.025),
-(75, 4, 71, 2, 3, 43, '', 56.025),
-(76, 4, 71, 2, 4, 100, '', 56.025),
-(77, 4, 71, 4, 1, 4, '', 56.025),
-(78, 4, 71, 4, 2, 44, '', 56.025),
-(79, 4, 71, 4, 3, 22, '', 56.025),
-(80, 4, 71, 4, 4, 55, '', 56.025);
-
 -- --------------------------------------------------------
 
 --
@@ -209,7 +155,7 @@ CREATE TABLE `user` (
 
 INSERT INTO `user` (`id`, `nama`, `nama_lengkap`, `email`, `katasandi`, `level`) VALUES
 (1, 'admin', 'Admin sijuri', 'adminsijuri123@gmail.com', '202cb962ac59075b964b07152d234b70', 'admin'),
-(2, 'jurisat', 'Drs. Agastya Rama Listya, MSM, Ph.D', 'jurisatu@gmail.com', '88c7d1e4ad2c1feb793dcfe64d7fd721', 'juri'),
+(2, 'jurisatu', 'Drs. Agastya Rama Listya, MSM, Ph.D', 'jurisatu@gmail.com', '88c7d1e4ad2c1feb793dcfe64d7fd721', 'juri'),
 (4, 'juridua', 'Ardelia Padma Sawitri', 'juridua@gmail.com', '88c7d1e4ad2c1feb793dcfe64d7fd721', 'juri'),
 (5, 'juritiga', 'Budi Susanto Yohanes', 'juritiga@gmail.com', '88c7d1e4ad2c1feb793dcfe64d7fd721', 'juri'),
 (6, 'juriempat', 'Ega O.  Azarya', 'juriempat@gmail.com', '88c7d1e4ad2c1feb793dcfe64d7fd721', 'juri'),
