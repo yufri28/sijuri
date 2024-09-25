@@ -56,9 +56,9 @@ if (isset($_SESSION['id']) && isset($_SESSION['nama'])) {
                                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                 <i class="fa-solid fa-users"></i>
                             </button>
-                        </div>
+                        
                         <?php if ($_SESSION['level'] == 'juri') : ?>
-                            <div class="menu-row">
+                            
                                 <button class="menu-button" onclick="window.location.href='../penilaian/penilaianView.php'">
                                     <span></span><span></span><span></span><span></span>
                                     Data Penilaian
@@ -73,12 +73,6 @@ if (isset($_SESSION['id']) && isset($_SESSION['nama'])) {
                                 </button>
                             <?php endif; ?>
                             <?php if ($_SESSION['level'] == 'admin') : ?>
-                                <button style="margin-left: 170px;" class="menu-button" onclick="window.location.href='../dataPeriode/dataPeriodeView.php'">
-                                    <span></span><span></span><span></span><span></span>
-                                    Data Periode
-                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                    <i class="fa-regular fa-calendar-check"></i>
-                                </button>
                                 <button class="menu-button" onclick="window.location.href='../hasilAkhir/hasilakhirView.php'">
                                     <span></span><span></span><span></span><span></span>
                                     Data Hasil Akhir

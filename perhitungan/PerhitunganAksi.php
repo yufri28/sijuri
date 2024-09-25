@@ -24,9 +24,13 @@ function getAlternatif($koneksi)
 {
     $sql = "SELECT DISTINCT a.id_alternatif, a.nama_alternatif
             FROM penilaian AS p
-            JOIN periode AS pe ON p.id_periode = pe.id_periode
             JOIN alternatif AS a ON p.id_alternatif = a.id_alternatif
-            WHERE pe.status_periode = 'Aktif'";
+            ORDER BY 
+                CASE 
+                    WHEN a.nomor_urut = 0 THEN 1 
+                    ELSE 0 
+                END, 
+                a.nomor_urut"; // Urutkan berdasarkan nomor_urut, dengan 0 di akhir
     $result = $koneksi->query($sql);
 
     if ($result && $result->num_rows > 0) {
@@ -42,6 +46,7 @@ function getAlternatif($koneksi)
         return [];
     }
 }
+
 
 // Fungsi untuk mendapatkan data kriteria
 function getKriteria($koneksi)
@@ -85,14 +90,12 @@ function getSubkriteria($koneksi)
         return [];
     }
 }
-
-// Fungsi untuk mendapatkan nilai akhir dari setiap alternatif berdasarkan periode aktif
-function getNilaiAkhir($koneksi, $id_periode_aktif)
+// Fungsi untuk mendapatkan nilai akhir dari setiap alternatif
+function getNilaiAkhir($koneksi)
 {
     $nilai_akhir = [];
     $sql = "SELECT id_alternatif, AVG(nilai_akhir) AS nilai_akhir 
             FROM penilaian 
-            WHERE id_periode = $id_periode_aktif 
             GROUP BY id_alternatif";
     $result = $koneksi->query($sql);
 
@@ -149,4 +152,3 @@ function getKelompok($nilai)
         return 'Diploma';
     }
 }
-?>

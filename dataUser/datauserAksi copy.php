@@ -9,11 +9,20 @@ if (isset($_SESSION['id']) && isset($_SESSION['nama']) && $_SESSION['level'] !==
     <html lang="en">
 
     <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Penilaian Lomba Paduan Suara</title>
+        <link rel="stylesheet" href="../assets/css/style.css" />
+        <!--Bootstrap -->
+        <link rel="stylesheet" href="../bootstrap-5.3.3-dist/css/bootstrap.min.css" />
+        <!-- Boxicons CDN Link -->
+        <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet" />
+        <!-- Icons Fontawesome -->
+        <link rel="stylesheet" href="../fontawesome/css/all.css">
         <!-- Icon Musik -->
         <link rel="shortcut icon" href="../assets/img/logoMusik.png">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://cdn.datatables.net/2.0.2/css/dataTables.bootstrap5.css">
     </head>
 
     <body>
@@ -22,73 +31,43 @@ if (isset($_SESSION['id']) && isset($_SESSION['nama']) && $_SESSION['level'] !==
 
         <body></body>
         <?php
-        if (isset($_POST['action']) && $_POST['action'] === 'activate') {
-            // Memeriksa apakah permintaan untuk mengaktifkan periode
-            if (isset($_POST['id_periode'])) {
-                $id_periode = $_POST['id_periode'];
-                // Koneksi ke database
-                $koneksi = connectDB();
-                // Update status semua periode menjadi "Tidak Aktif" kecuali periode yang diaktifkan
-                $updateStatusNonActive = "UPDATE periode SET status_periode = 'Tidak Aktif' WHERE id_periode != $id_periode";
-                $koneksi->query($updateStatusNonActive);
-
-                // Update status periode yang diaktifkan menjadi "Aktif"
-                $updateStatusActive = "UPDATE periode SET status_periode = 'Aktif' WHERE id_periode = $id_periode";
-                if ($koneksi->query($updateStatusActive)) {
-                    header("Location: dataPeriodeView.php");
-                    exit();
-                } else {
-                    echo "Error updating record: " . $koneksi->error;
-                }
-                // Menutup koneksi ke database
-                $koneksi->close();
-            } else {
-            }
-        }
 
         // Uji jika tombol simpan di klik
         if (isset($_POST['bsimpan'])) {
             // Mengambil data dari form
-            $tahun = $_POST['ttahun'];
-            $bulan = $_POST['tbulan'];
+            $nama = $_POST['tnama'];
+            $namal = $_POST['tnamal'];
+            $email = $_POST['temail'];
+            $katasandi = $_POST['tpass'];
+            $level = $_POST['tlevel'];
 
             // Koneksi ke database
             $koneksi = connectDB();
 
-            // Periksa apakah kombinasi tahun dan bulan periode sudah ada
-            $sqlCheck = "SELECT * FROM periode WHERE tahun_periode = ? AND bulan_periode = ?";
+            // Periksa apakah email sudah ada dalam database
+            $sqlCheck = "SELECT * FROM user WHERE email = ? AND level = ?";
             $stmtCheck = $koneksi->prepare($sqlCheck);
-            $stmtCheck->bind_param("ss", $tahun, $bulan);
+            $stmtCheck->bind_param("ss", $email, $level);
             $stmtCheck->execute();
             $resultCheck = $stmtCheck->get_result();
 
             if ($resultCheck->num_rows > 0) {
-                // Jika kombinasi sudah ada, tampilkan pesan kesalahan
+                // Jika email sudah ada, tampilkan pesan kesalahan
         ?>
                 <script>
                     Swal.fire({
                         icon: 'error',
                         title: 'Gagal',
-                        text: 'Data periode sudah ada, silakan masukkan data periode yang berbeda.'
+                        text: 'Data sudah ada, silakan masukkan data user yang berbeda.'
                     }).then((result) => {
                         window.history.back();
                     })
                 </script>
                 <?php
             } else {
-                // Ambil semua periode yang sudah ada
-                $sql = "SELECT id_periode FROM periode";
-                $result = $koneksi->query($sql);
-
-                if ($result->num_rows > 0) {
-                    // Ubah status semua periode yang ada menjadi "Tidak Aktif"
-                    $updateStatus = "UPDATE periode SET status_periode = 'Tidak Aktif'";
-                    $koneksi->query($updateStatus);
-                }
-
                 // Persiapan simpan data baru
-                $simpan = "INSERT INTO periode (tahun_periode, bulan_periode, status_periode)
-                    VALUES ('$tahun', '$bulan', 'Aktif')";
+                $simpan = "INSERT INTO user (nama, nama_lengkap, email, katasandi, level)
+                VALUES ('$nama', '$namal', '$email', '$katasandi', '$level')";
 
                 // Menjalankan query
                 if ($koneksi->query($simpan) === TRUE) {
@@ -100,7 +79,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['nama']) && $_SESSION['level'] !==
                             title: 'Sukses',
                             text: 'Simpan data berhasil!'
                         }).then((result) => {
-                            window.location = 'dataPeriodeView.php';
+                            window.location = 'datauserView.php';
                         })
                     </script>
                 <?php
@@ -113,7 +92,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['nama']) && $_SESSION['level'] !==
                             title: 'Gagal',
                             text: 'Simpan data gagal!'
                         }).then((result) => {
-                            window.location = 'dataPeriodeView.php';
+                            window.location = 'datauserView.php';
                         })
                     </script>
                 <?php
@@ -125,22 +104,28 @@ if (isset($_SESSION['id']) && isset($_SESSION['nama']) && $_SESSION['level'] !==
         } else {
             // Jika form tidak disubmit, kembali ke halaman sebelumnya atau tampilkan pesan error
         }
+
         //Uji jika tombol ubah di klik
         if (isset($_POST['bubah'])) {
             // Mengambil data dari form
-            $id_periode = $_POST['id_periode'];
-            $tahun = $_POST['ttahun'];
-            $bulan = $_POST['tbulan'];
+            $id = $_POST['id'];
+            $nama = $_POST['tnama'];
+            $namal = $_POST['tnamal'];
+            $email = $_POST['temail'];
+            $katasandi = $_POST['tpass']);
+            $level = $_POST['tlevel'];
 
             // Koneksi ke database
             $koneksi = connectDB();
 
-            //Persiapan ubah data
-            // Query untuk mengubah data ke dalam tabel kriteria
-            $ubah = "UPDATE periode SET 
-                                    tahun_periode = '$tahun',
-                                    bulan_periode = '$bulan'
-                                WHERE id_periode = '$id_periode'
+            // Query untuk mengubah data ke dalam tabel user
+            $ubah = "UPDATE user SET 
+                                    nama = '$nama',
+                                    nama_lengkap = '$namal',
+                                    email = '$email',
+                                    level = '$level',
+                                    katasandi = '$katasandi'
+                                WHERE id = '$id'
                                     ";
 
             // Menjalankan query
@@ -153,7 +138,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['nama']) && $_SESSION['level'] !==
                         title: 'Sukses',
                         text: 'Ubah data berhasil!'
                     }).then((result) => {
-                        window.location = 'dataPeriodeView.php';
+                        window.location = 'datauserView.php';
                     })
                 </script>
             <?php
@@ -166,7 +151,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['nama']) && $_SESSION['level'] !==
                         title: 'Gagal',
                         text: 'Ubah data gagal!'
                     }).then((result) => {
-                        window.location = 'dataPeriodeView.php';
+                        window.location = 'datauserView.php';
                     })
                 </script>
             <?php
@@ -180,13 +165,13 @@ if (isset($_SESSION['id']) && isset($_SESSION['nama']) && $_SESSION['level'] !==
         //Uji jika tombol hapus di klik
         if (isset($_POST['bhapus'])) {
             // Mengambil data dari form
-            $id_periode = $_POST['id_periode'];
+            $id = $_POST['id'];
 
             // Koneksi ke database
             $koneksi = connectDB();
 
             // Query untuk menghapus data pada tabel kriteria
-            $hapus = "DELETE FROM periode WHERE id_periode = '$id_periode'";
+            $hapus = "DELETE FROM user WHERE id = '$id'";
 
             // Menjalankan query
             if ($koneksi->query($hapus) === TRUE) {
@@ -198,7 +183,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['nama']) && $_SESSION['level'] !==
                         title: 'Sukses',
                         text: 'Hapus data berhasil!'
                     }).then((result) => {
-                        window.location = 'dataPeriodeView.php';
+                        window.location = 'datauserView.php';
                     })
                 </script>
             <?php
@@ -211,7 +196,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['nama']) && $_SESSION['level'] !==
                         title: 'Gagal',
                         text: 'Hapus data gagal!'
                     }).then((result) => {
-                        window.location = 'dataPeriodeView.php';
+                        window.location = 'datauserView.php';
                     })
                 </script>
         <?php
@@ -223,12 +208,20 @@ if (isset($_SESSION['id']) && isset($_SESSION['nama']) && $_SESSION['level'] !==
         }
         ?>
 
+        <script src="//code.jquery.com/jquery-3.7.1.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+        <script src="//cdn.datatables.net/2.0.2/js/dataTables.js"></script>
+        <script src="//cdn.datatables.net/2.0.2/js/dataTables.bootstrap5.js"></script>
+        <script src="../assets/js/script.js"></script>
+        <script src="../bootstrap-5.3.3-dist/js/bootstrap.min.js"></script>
+
     </body>
 
     </html>
+
 <?php
 } else {
-    header("Location: dataPeriodeView.php");
+    header("Location: datauserView.php");
     exit();
 }
 ?>

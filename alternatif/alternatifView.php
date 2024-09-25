@@ -11,22 +11,29 @@ if (isset($_SESSION['id']) && isset($_SESSION['nama'])) {
     // Memanggil Koneksi Database
     require_once "../assets/koneksi.php";
     $koneksi = connectDB(); // Menggunakan fungsi connectDB() untuk mendapatkan koneksi database
+// Fungsi untuk mendapatkan data alternatif berdasarkan nomor urut, kecuali 0 di akhir
+function getAlternatif($koneksi)
+{
+    $sql = "SELECT id_alternatif, nama_alternatif, nomor_urut, lagu_pertama, lagu_kedua 
+            FROM alternatif 
+            ORDER BY 
+                CASE 
+                    WHEN nomor_urut = 0 THEN 1
+                    ELSE 0
+                END, 
+                nomor_urut ASC"; // Menaruh nomor_urut 0 di bagian terakhir
+    $result = $koneksi->query($sql);
 
-    // Fungsi untuk mendapatkan data kriteria
-    function getAlternatif($koneksi)
-    {
-        $sql = "SELECT id_alternatif, nama_alternatif, musica_sacra, traditional_gospel, periode_penilaian FROM alternatif";
-        $result = $koneksi->query($sql);
-
-        if ($result && $result->num_rows > 0) {
-            while ($row = $result->fetch_assoc()) {
-                $alternatif[] = $row;
-            }
-            return $alternatif;
-        } else {
-            return [];
+    if ($result && $result->num_rows > 0) {
+        while ($row = $result->fetch_assoc()) {
+            $alternatif[] = $row;
         }
+        return $alternatif;
+    } else {
+        return [];
     }
+}
+
 
     // Fungsi untuk mendapatkan data kriteria
     function getKriteria($koneksi)
@@ -46,23 +53,6 @@ if (isset($_SESSION['id']) && isset($_SESSION['nama'])) {
 
     $kriteria = getKriteria($koneksi);
 
-    // Fungsi untuk mendapatkan daftar tahun periode dan bulan periode dari database
-    function getTahunPeriodePenilaian($koneksi)
-    {
-        $sql = "SELECT tahun_periode, bulan_periode FROM periode";
-        $result = $koneksi->query($sql);
-
-        if ($result && $result->num_rows > 0) {
-            while ($row = $result->fetch_assoc()) {
-                $tahun_periode_penilaian[] = $row;
-            }
-            return $tahun_periode_penilaian;
-        } else {
-            return [];
-        }
-    }
-
-    $tahun_periode_penilaian = getTahunPeriodePenilaian($koneksi);
 ?>
     <!DOCTYPE html>
     <html lang="en" dir="ltr">
@@ -109,15 +99,15 @@ if (isset($_SESSION['id']) && isset($_SESSION['nama'])) {
                                         <tr>
                                             <th style="text-align: center;">No</th>
                                             <?php if ($_SESSION['level'] == 'admin') : ?>
-                                                <th style="text-align: center;">Nama Perguruan Tinggi</th>
+                                                <th style="text-align: center;">Nama Paduan Suara</th>
                                             <?php endif; ?>
                                             <?php if ($_SESSION['level'] == 'juri') : ?>
-                                                <th style="text-align: center; width: 860px;">Nama Perguruan Tinggi</th>
+                                                <th style="text-align: center; width: 760px;">Nama Paduan Suara</th>
                                             <?php endif; ?>
+                                            <th style="text-align: center;  width: 210px;">Nomor Urut Tampil</th>
                                             <?php foreach ($kriteria as $item) : ?>
-                                                <th style="text-align: center; width: 310px;"><?= htmlspecialchars($item['nama_kriteria']) ?></th>
+                                                <th style="text-align: center; width: 210px;"><?= htmlspecialchars($item['nama_kriteria']) ?></th>
                                             <?php endforeach; ?>
-                                            <th style="text-align: center;  width: 220px;">Periode Penilaian</th>
                                             <?php if ($_SESSION['level'] == 'admin') : ?>
                                                 <th style="text-align: center; width: 150px;">Aksi</th>
                                             <?php endif; ?>
@@ -131,9 +121,9 @@ if (isset($_SESSION['id']) && isset($_SESSION['nama'])) {
                                             <tr>
                                                 <td style="text-align: center;"><?= $no++ ?></td>
                                                 <td style="text-align: left;"><?= $alternatif_item['nama_alternatif'] ?></td>
-                                                <td style="text-align: left;"><?= $alternatif_item['musica_sacra'] ?></td>
-                                                <td style="text-align: left;"><?= $alternatif_item['traditional_gospel'] ?></td>
-                                                <td style="text-align: center;"><?= $alternatif_item['periode_penilaian'] ?></td>
+                                                <td style="text-align: center;"><?= $alternatif_item['nomor_urut'] ?></td>
+                                                <td style="text-align: left;"><?= $alternatif_item['lagu_pertama'] ?></td>
+                                                <td style="text-align: left;"><?= $alternatif_item['lagu_kedua'] ?></td>
                                                 <?php if ($_SESSION['level'] == 'admin') : ?>
                                                     <td>
                                                         <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalUbah<?= $no ?>"><i class="fa-regular fa-pen-to-square"></i></a>
@@ -141,6 +131,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['nama'])) {
                                                     </td>
                                                 <?php endif; ?>
                                             </tr>
+                                            
                                             <!-- Awal Modal Ubah -->
                                             <div class="modal fade modal-lg" id="modalUbah<?= $no ?>" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                                                 <div class="modal-dialog">
@@ -153,25 +144,20 @@ if (isset($_SESSION['id']) && isset($_SESSION['nama'])) {
                                                             <input type="hidden" name="id_alternatif" value="<?= $alternatif_item['id_alternatif'] ?>">
                                                             <div class="row g-3 modal-body">
                                                                 <div class="col-md-6">
-                                                                    <label for="inputNama" class="form-label">Nama Perguruan Tinggi</label>
-                                                                    <input type="text" name="tnama" value="<?= $alternatif_item['nama_alternatif'] ?>" pattern="[A-Z][a-zA-Z0-9\- ]{1,}$" title="Silakan diisi dan dimulai dengan huruf kapital" class="form-control" id="inputNama" required oninvalid="this.setCustomValidity('Silakan diisi dan dimulai dengan huruf kapital')" onchange="try{setCustomValidity('')}catch(e){}" autocomplete="off">
+                                                                    <label for="inputNama" class="form-label">Nama Paduan Suara</label>
+                                                                    <input type="text" name="tnama" value="<?= $alternatif_item['nama_alternatif'] ?>" pattern="[A-Z][a-zA-Z0-9.\- ]{1,}$" title="Silakan diisi dan dimulai dengan huruf kapital" class="form-control" id="inputNama" required oninvalid="this.setCustomValidity('Silakan diisi dan dimulai dengan huruf kapital')" onchange="try{setCustomValidity('')}catch(e){}" autocomplete="off">
                                                                 </div>
                                                                 <div class="col-md-6">
-                                                                    <label for="inputMusicaSacra" class="form-label">Musica Sacra</label>
-                                                                    <input type="text" name="tmusica_sacra" value="<?= $alternatif_item['musica_sacra'] ?>" class="form-control" placeholder="Masukkan judul lagu" id="inputMusicaSacra" pattern="[A-Z][a-zA-Z0-9\- ]{1,}$" title="Silakan diisi dan dimulai dengan huruf kapital" class="form-control" required oninvalid="this.setCustomValidity('Silakan diisi dan dimulai dengan huruf kapital')" onchange="try{setCustomValidity('')}catch(e){}" autocomplete="off">
+                                                                    <label for="inputUrut" class="form-label">Nomor Urut Peserta</label>
+                                                                    <input type="number" name="turut" value="<?= $alternatif_item['nomor_urut'] ?>" title="Silakan diisi" class="form-control" id="inputUrut" required oninvalid="this.setCustomValidity('Silakan diisi dengan benar')" onchange="try{setCustomValidity('')}catch(e){}" autocomplete="off">
                                                                 </div>
                                                                 <div class="col-md-6">
-                                                                    <label for="inputTraditionalGospel" class="form-label">Traditional Gospel</label>
-                                                                    <input type="text" name="ttraditional_gospel" value="<?= $alternatif_item['traditional_gospel'] ?>" class="form-control" placeholder="Masukkan judul lagu" id="inputTraditionalGospel" pattern="[A-Z][a-zA-Z0-9\- ]{1,}$" title="Silakan diisi dan dimulai dengan huruf kapital" class="form-control" required oninvalid="this.setCustomValidity('Silakan diisi dan dimulai dengan huruf kapital')" onchange="try{setCustomValidity('')}catch(e){}" autocomplete="off">
+                                                                    <label for="inputLaguPertama" class="form-label">Lagu ke-1</label>
+                                                                    <input type="text" name="tlagupertama" value="<?= $alternatif_item['lagu_pertama'] ?>" class="form-control" placeholder="Masukkan judul lagu" id="inputLaguPertama" pattern="[A-Z][a-zA-Z0-9,./\- ]{1,}$" title="Silakan diisi dan dimulai dengan huruf kapital" class="form-control" oninvalid="this.setCustomValidity('Silakan diisi dan dimulai dengan huruf kapital')" onchange="try{setCustomValidity('')}catch(e){}" autocomplete="off">
                                                                 </div>
                                                                 <div class="col-md-6">
-                                                                    <label for="inputTerakhir" class="form-label">Periode Penilaian</label>
-                                                                    <select id="inputTerakhir" class="form-select" name="tterakhir" title="Silakan memilih periode penilaian" required>
-                                                                        <option value="<?= $alternatif_item['periode_penilaian'] ?>" hidden><?= $alternatif_item['periode_penilaian'] ?></option>
-                                                                        <?php foreach ($tahun_periode_penilaian as $tahun) : ?>
-                                                                            <option value="<?= $tahun['tahun_periode'] ?> <?= $tahun['bulan_periode'] ?>"><?= $tahun['tahun_periode'] ?> <?= $tahun['bulan_periode'] ?></option>
-                                                                        <?php endforeach; ?>
-                                                                    </select>
+                                                                    <label for="inputLaguKedua" class="form-label">Lagu ke-2</label>
+                                                                    <input type="text" name="tlagukedua" value="<?= $alternatif_item['lagu_kedua'] ?>" class="form-control" placeholder="Masukkan judul lagu" id="inputLaguKedua" pattern="[A-Z][a-zA-Z0-9,./\- ]{1,}$" title="Silakan diisi dan dimulai dengan huruf kapital" class="form-control" oninvalid="this.setCustomValidity('Silakan diisi dan dimulai dengan huruf kapital')" onchange="try{setCustomValidity('')}catch(e){}" autocomplete="off">
                                                                 </div>
                                                             </div>
                                                             <div class="modal-footer">
@@ -196,7 +182,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['nama'])) {
                                                             <input type="hidden" name="id_alternatif" value="<?= $alternatif_item['id_alternatif'] ?>">
                                                             <div class="row g-3 modal-body">
                                                                 <h5 class="text-center"> Apakah anda yakin akan menghapus data ini? <br>
-                                                                    <span class="text-danger"><?= $alternatif_item['nama_alternatif'] ?> - <?= $alternatif_item['periode_penilaian'] ?></span>
+                                                                    <span class="text-danger"><?= $alternatif_item['nama_alternatif'] ?> - <?= $alternatif_item['nomor_urut'] ?></span>
                                                                 </h5>
                                                             </div>
                                                             <div class="modal-footer">
@@ -228,25 +214,20 @@ if (isset($_SESSION['id']) && isset($_SESSION['nama'])) {
                                         <form class="row g-3" method="POST" action="alternatifAksi.php">
                                             <div class="row g-3 modal-body">
                                                 <div class="col-md-6">
-                                                    <label for="inputNama" class="form-label">Nama Perguruan Tinggi</label>
-                                                    <input type="text" name="tnama" pattern="[A-Z][a-zA-Z0-9\- ]{1,}$" title="Silakan diisi dan dimulai dengan huruf kapital" class="form-control" id="inputNama" required oninvalid="this.setCustomValidity('Silakan diisi dan dimulai dengan huruf kapital')" onchange="try{setCustomValidity('')}catch(e){}" autocomplete="off">
+                                                    <label for="inputNama" class="form-label">Nama Paduan Suara</label>
+                                                    <input type="text" name="tnama" pattern="[A-Z][a-zA-Z0-9.\- ]{1,}$" title="Silakan diisi dan dimulai dengan huruf kapital" class="form-control" id="inputNama" required oninvalid="this.setCustomValidity('Silakan diisi dan dimulai dengan huruf kapital')" onchange="try{setCustomValidity('')}catch(e){}" autocomplete="off">
                                                 </div>
                                                 <div class="col-md-6">
-                                                    <label for="inputMusicaSacra" class="form-label">Musica Sacra</label>
-                                                    <input type="text" name="tmusica_sacra" class="form-control" placeholder="Masukkan judul lagu" id="inputMusicaSacra" pattern="[A-Z][a-zA-Z0-9\- ]{1,}$" title="Silakan diisi dan dimulai dengan huruf kapital" class="form-control" required oninvalid="this.setCustomValidity('Silakan diisi dan dimulai dengan huruf kapital')" onchange="try{setCustomValidity('')}catch(e){}" autocomplete="off">
+                                                    <label for="inputUrut" class="form-label">Nomor Urut Peserta</label>
+                                                    <input type="number" name="turut" title="Silakan diisi" class="form-control" id="inputUrut" required oninvalid="this.setCustomValidity('Silakan diisi dengan benar')" onchange="try{setCustomValidity('')}catch(e){}" autocomplete="off">
                                                 </div>
                                                 <div class="col-md-6">
-                                                    <label for="inputTraditionalGospel" class="form-label">Traditional Gospel</label>
-                                                    <input type="text" name="ttraditional_gospel" class="form-control" placeholder="Masukkan judul lagu" id="inputTraditionalGospel" pattern="[A-Z][a-zA-Z0-9\- ]{1,}$" title="Silakan diisi dan dimulai dengan huruf kapital" class="form-control" required oninvalid="this.setCustomValidity('Silakan diisi dan dimulai dengan huruf kapital')" onchange="try{setCustomValidity('')}catch(e){}" autocomplete="off">
+                                                    <label for="inputLaguPertama" class="form-label">Lagu ke-1</label>
+                                                    <input type="text" name="tlagupertama" class="form-control" placeholder="Masukkan judul lagu" id="inputLaguPertama" pattern="[A-Z][a-zA-Z0-9,./\- ]{1,}$" title="Silakan diisi dan dimulai dengan huruf kapital" class="form-control" oninvalid="this.setCustomValidity('Silakan diisi dan dimulai dengan huruf kapital')" onchange="try{setCustomValidity('')}catch(e){}" autocomplete="off">
                                                 </div>
                                                 <div class="col-md-6">
-                                                    <label for="inputTerakhir" class="form-label">Periode Penilaian</label>
-                                                    <select id="inputTerakhir" class="form-select" name="tterakhir" title="Silakan memilih periode penilaian" required>
-                                                        <option value="" disabled selected>--Pilih Periode Penilaian--</option>
-                                                        <?php foreach ($tahun_periode_penilaian as $tahun) : ?>
-                                                            <option value="<?= $tahun['tahun_periode'] ?> <?= $tahun['bulan_periode'] ?>"><?= $tahun['tahun_periode'] ?> <?= $tahun['bulan_periode'] ?></option>
-                                                        <?php endforeach; ?>
-                                                    </select>
+                                                    <label for="inputLaguKedua" class="form-label">Lagu ke-2</label>
+                                                    <input type="text" name="tlagukedua" class="form-control" placeholder="Masukkan judul lagu" id="inputLaguKedua" pattern="[A-Z][a-zA-Z0-9,./\- ]{1,}$" title="Silakan diisi dan dimulai dengan huruf kapital" class="form-control" oninvalid="this.setCustomValidity('Silakan diisi dan dimulai dengan huruf kapital')" onchange="try{setCustomValidity('')}catch(e){}" autocomplete="off">
                                                 </div>
                                             </div>
                                             <div class="modal-footer">

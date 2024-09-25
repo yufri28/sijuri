@@ -106,8 +106,16 @@ if (isset($_SESSION['id']) && isset($_SESSION['nama']) && $_SESSION['level'] !==
                                                                 </div>
                                                                 <div class="col-md-6">
                                                                     <label for="inputNamaL" class="form-label">Nama Lengkap</label>
-                                                                    <input type="text" name="tnamal" value="<?= $user_item['nama_lengkap'] ?>" pattern="[A-Z][a-zA-Z ]{1,}$" title="Berawalan dengan huruf kapital" class="form-control" id="inputNamaL" required oninvalid="this.setCustomValidity('Berawalan dengan huruf kapital')" onchange="try{setCustomValidity('')}catch(e){}" autocomplete="off">
+                                                                    <input type="text" name="tnamal"
+                                                                        value="<?= htmlspecialchars($user_item['nama_lengkap']) ?>"
+                                                                        pattern="^[A-Z][a-zA-Z., ]*$"
+                                                                        title="Berawalan dengan huruf kapital"
+                                                                        class="form-control" id="inputNamaL" required
+                                                                        oninvalid="this.setCustomValidity('Berawalan dengan huruf kapital, diikuti huruf besar/kecil, koma, atau titik')"
+                                                                        onchange="try{setCustomValidity('')}catch(e){}"
+                                                                        autocomplete="off">
                                                                 </div>
+
                                                                 <div class="col-md-6">
                                                                     <label for="inputEmail" class="form-label">E-mail</label>
                                                                     <input type="text" name="temail" value="<?= $user_item['email'] ?>" pattern="[A-Za-z0-9_]+@[A-Za-z0-9]+\.[A-Za-z]{2,}$" oninvalid="this.setCustomValidity('E-mail harus diisi dan tidak boleh ada spasi')" onchange="try{setCustomValidity('')}catch(e){}" class="form-control" id="inputEmail" required autocomplete="off">
@@ -188,8 +196,15 @@ if (isset($_SESSION['id']) && isset($_SESSION['nama']) && $_SESSION['level'] !==
                                                 </div>
                                                 <div class="col-md-6">
                                                     <label for="inputNamaL" class="form-label">Nama Lengkap</label>
-                                                    <input type="text" name="tnamal" pattern="[A-Z][a-zA-Z ]{1,}$" title="Berawalan dengan huruf kapital" class="form-control" id="inputNamaL" required oninvalid="this.setCustomValidity('Berawalan dengan huruf kapital')" onchange="try{setCustomValidity('')}catch(e){}" autocomplete="off">
+                                                    <input type="text" name="tnamal"
+                                                        pattern="^[A-Z][a-zA-Z., ]*$"
+                                                        title="Berawalan dengan huruf kapital"
+                                                        class="form-control" id="inputNamaL" required
+                                                        oninvalid="this.setCustomValidity('Berawalan dengan huruf kapital, diikuti huruf besar/kecil, koma, atau titik')"
+                                                        onchange="try{setCustomValidity('')}catch(e){}"
+                                                        autocomplete="off">
                                                 </div>
+
                                                 <div class="col-md-6">
                                                     <label for="inputEmail" class="form-label">E-mail</label>
                                                     <input type="text" name="temail" pattern="[A-Za-z0-9_]+@[A-Za-z0-9]+\.[A-Za-z]{2,}$" oninvalid="this.setCustomValidity('E-mail harus diisi dan tidak boleh ada spasi')" onchange="try{setCustomValidity('')}catch(e){}" class="form-control" id="inputEmail" required autocomplete="off">

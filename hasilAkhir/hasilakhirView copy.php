@@ -45,11 +45,10 @@ if (isset($_SESSION['id']) && isset($_SESSION['nama'])) {
         $akumulasi_predikat[$id_alt] = array_sum($peringkat[$id_alt]);
     }
 
-?>
+    ?>
 
     <!DOCTYPE html>
     <html lang="en" dir="ltr">
-
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -86,52 +85,50 @@ if (isset($_SESSION['id']) && isset($_SESSION['nama'])) {
                                 </button>
                             </div>
                             <?php if (!empty($alternatif)) : ?>
-                                <div class="table-responsive">
-                                    <table id="example" class="table table-striped" style="width:100%">
-                                        <thead>
-                                            <tr>
-                                                <th style="text-align: center;">No</th>
-                                                <th style="text-align: center;">Nama Paduan Suara</th>
-                                                <?php foreach ($users as $index => $user) : ?>
-                                                    <th style="text-align: center;" title="Nilai dari <?= $user['nama_lengkap'] ?>">Nilai Juri <?= $index + 1 ?></th>
-                                                    <th style="text-align: center;">Peringkat</th>
-                                                <?php endforeach; ?>
-                                                <th style="text-align: center;" title="Gabungan nilai semua juri">Hasil Akhir</th>
-                                                <th style="text-align: center;">Kelompok</th>
-                                                <th style="text-align: center;">Akumulasi Predikat</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <?php foreach ($alternatif as $index => $alt) : ?>
-                                                <tr>
-                                                    <td style="text-align: center;"><?= $index + 1 ?></td>
-                                                    <td style="text-align: left;"><?= $alt['nama_alternatif'] ?></td>
-                                                    <?php foreach ($users as $user) : ?>
-                                                        <?php
-                                                        $id_user = $user['id'];
-                                                        $sql_nilai = "SELECT nilai_akhir FROM penilaian WHERE id_alternatif = {$alt['id_alternatif']} AND id = $id_user";
-                                                        $result_nilai = $koneksi->query($sql_nilai);
-                                                        $nilai = ($result_nilai && $result_nilai->num_rows > 0) ? $result_nilai->fetch_assoc()['nilai_akhir'] : '-';
-                                                        ?>
-                                                        <td style="text-align: center;">
-                                                            <?php if ($nilai != '-') : ?>
-                                                                <?= number_format($nilai, 3); ?>
-                                                            <?php else : ?>
-                                                                <div class="alert alert-danger alert-dismissible fade show py-1 px-2 m-0" role="alert" style="font-size: 0.8rem;">
-                                                                    Belum diberikan nilai
-                                                                </div>
-                                                            <?php endif; ?>
-                                                        </td>
-                                                        <td style="text-align: center;"><?= isset($peringkat[$alt['id_alternatif']][$id_user]) ? $peringkat[$alt['id_alternatif']][$id_user] : '-' ?></td>
-                                                    <?php endforeach; ?>
-                                                    <td style="text-align: center;"><?= number_format($nilai_akhir[$alt['id_alternatif']], 3) ?></td>
-                                                    <td style="text-align: center;"><?= getKelompok(number_format($nilai_akhir[$alt['id_alternatif']], 3)) ?></td>
-                                                    <td style="text-align: center;"><?= $akumulasi_predikat[$alt['id_alternatif']] ?></td>
-                                                </tr>
+                                <table id="example" class="table table-striped" style="width:100%">
+                                    <thead>
+                                        <tr>
+                                            <th style="text-align: center;">No</th>
+                                            <th style="text-align: center;">Nama Paduan Suara</th>
+                                            <?php foreach ($users as $index => $user) : ?>
+                                                <th style="text-align: center;" title="Nilai dari <?= $user['nama_lengkap'] ?>">Nilai Juri <?= $index + 1 ?></th>
+                                                <th style="text-align: center;">Peringkat</th>
                                             <?php endforeach; ?>
-                                        </tbody>
-                                    </table>
-                                </div>
+                                            <th style="text-align: center;" title="Gabungan nilai semua juri">Hasil Akhir</th>
+                                            <th style="text-align: center;">Kelompok</th>
+                                            <th style="text-align: center;">Akumulasi Predikat</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php foreach ($alternatif as $index => $alt) : ?>
+                                            <tr>
+                                                <td style="text-align: center;"><?= $index + 1 ?></td>
+                                                <td style="text-align: left;"><?= $alt['nama_alternatif'] ?></td>
+                                                <?php foreach ($users as $user) : ?>
+                                                    <?php
+                                                    $id_user = $user['id'];
+                                                    $sql_nilai = "SELECT nilai_akhir FROM penilaian WHERE id_alternatif = {$alt['id_alternatif']} AND id = $id_user";
+                                                    $result_nilai = $koneksi->query($sql_nilai);
+                                                    $nilai = ($result_nilai && $result_nilai->num_rows > 0) ? $result_nilai->fetch_assoc()['nilai_akhir'] : '-';
+                                                    ?>
+                                                    <td style="text-align: center;">
+                                                        <?php if ($nilai != '-') : ?>
+                                                            <?= number_format($nilai, 3); ?>
+                                                        <?php else : ?>
+                                                            <div class="alert alert-danger alert-dismissible fade show py-1 px-2 m-0" role="alert" style="font-size: 0.8rem;">
+                                                                Belum diberikan nilai
+                                                            </div>
+                                                        <?php endif; ?>
+                                                    </td>
+                                                    <td style="text-align: center;"><?= isset($peringkat[$alt['id_alternatif']][$id_user]) ? $peringkat[$alt['id_alternatif']][$id_user] : '-' ?></td>
+                                                <?php endforeach; ?>
+                                                <td style="text-align: center;"><?= number_format($nilai_akhir[$alt['id_alternatif']], 3) ?></td>
+                                                <td style="text-align: center;"><?= getKelompok(number_format($nilai_akhir[$alt['id_alternatif']], 3)) ?></td>
+                                                <td style="text-align: center;"><?= $akumulasi_predikat[$alt['id_alternatif']] ?></td>
+                                            </tr>
+                                        <?php endforeach; ?>
+                                    </tbody>
+                                </table>
                             <?php else : ?>
                                 <div class="alert alert-warning" role="alert">
                                     Tidak ada hasil akhir.
@@ -151,9 +148,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['nama'])) {
         <script src="../bootstrap-5.3.3-dist/js/bootstrap.min.js"></script>
 
         <script>
-            new DataTable('#example', {
-                scrollX: true
-            });
+            new DataTable('#example');
         </script>
         <script>
             $(document).ready(function() {
@@ -162,9 +157,8 @@ if (isset($_SESSION['id']) && isset($_SESSION['nama'])) {
                 });
             });
         </script>
-
+        
     </body>
-
     </html>
 
 <?php

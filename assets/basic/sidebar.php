@@ -34,13 +34,6 @@ if (isset($_SESSION['id']) && isset($_SESSION['nama'])) {
                 </a>
                 <span class="tooltip">Beranda</span>
             </li>
-            <!-- <li>
-                <a href="../kriteria/kriteriaView.php">
-                    <i class="fa-solid fa-box"></i>
-                    <span class="links_name">Data Kategori</span>
-                </a>
-                <span class="tooltip">Data Kategori</span>
-            </li> -->
             <li>
                 <a href="../subkriteria/subkriteriaView.php">
                     <i class="fa-solid fa-boxes-stacked"></i>
@@ -55,15 +48,6 @@ if (isset($_SESSION['id']) && isset($_SESSION['nama'])) {
                 </a>
                 <span class="tooltip">Data Peserta Lomba</span>
             </li>
-            <?php if ($_SESSION['level'] == 'admin') : ?>
-                <li>
-                    <a href="../dataPeriode/dataPeriodeView.php">
-                        <i class="fa-regular fa-calendar-check"></i>
-                        <span class="links_name">Data Periode</span>
-                    </a>
-                    <span class="tooltip">Data Periode</span>
-                </li>
-            <?php endif; ?>
             <?php if ($_SESSION['level'] == 'juri') : ?>
                 <li>
                     <a href="../penilaian/penilaianView.php">
@@ -73,7 +57,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['nama'])) {
                     <span class="tooltip">Data Penilaian</span>
                 </li>
                 <li>
-                    <a href="../perhitungan/PerhitunganView.php">
+                    <a href="../perhitungan/perhitunganView.php">
                         <i class="fa-solid fa-calculator"></i>
                         <span class="links_name">Data Perhitungan</span>
                     </a>
@@ -86,6 +70,13 @@ if (isset($_SESSION['id']) && isset($_SESSION['nama'])) {
                     <span class="links_name">Data Hasil Akhir</span>
                 </a>
                 <span class="tooltip">Data Hasil Akhir</span>
+            </li>
+            <li>
+                <a href="../rangkuman/rangkumanView.php">
+                <i class="fa fa-book"></i>
+                    <span class="links_name">Rangkuman Komentar</span>
+                </a>
+                <span class="tooltip">Rangkuman Komentar</span>
             </li>
             <?php if ($_SESSION['level'] == 'admin') : ?>
                 <li>

@@ -9,10 +9,14 @@ if (isset($_SESSION['id']) && isset($_SESSION['nama']) && $_SESSION['level'] !==
     // Fungsi untuk mendapatkan data alternatif
     function getAlternatif($koneksi)
     {
-        $sql = "SELECT a.id_alternatif, a.nama_alternatif 
-        FROM alternatif a 
-        JOIN periode p ON a.periode_penilaian = CONCAT(p.tahun_periode, ' ', p.bulan_periode) 
-        WHERE p.status_periode = 'Aktif'";
+        $sql = "SELECT id_alternatif, nama_alternatif, nomor_urut
+                FROM alternatif 
+                ORDER BY 
+                    CASE 
+                        WHEN nomor_urut = 0 THEN 1
+                        ELSE 0
+                    END, 
+                    nomor_urut ASC"; // Menaruh nomor_urut 0 di bagian terakhir
         $result = $koneksi->query($sql);
 
         if ($result && $result->num_rows > 0) {
@@ -24,6 +28,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['nama']) && $_SESSION['level'] !==
             return [];
         }
     }
+
 ?>
     <!DOCTYPE html>
     <html lang="en" dir="ltr">
@@ -53,20 +58,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['nama']) && $_SESSION['level'] !==
                 <div class="container-penilaian">
                     <div class="card mt-4">
                         <div class="card-header fa-regular fa-rectangle-list">
-                            <span><b>Daftar Data Penilaian - Periode
-                                    <?php
-                                    // Ambil tahun dan bulan periode yang aktif dari database
-                                    $sql = "SELECT tahun_periode, bulan_periode FROM periode WHERE status_periode = 'Aktif'";
-                                    $result = $koneksi->query($sql);
-
-                                    if ($result && $result->num_rows > 0) {
-                                        $row = $result->fetch_assoc();
-                                        echo $row['tahun_periode'] . ' ' . $row['bulan_periode'];
-                                    } else {
-                                        echo "Tidak ada periode aktif";
-                                    }
-                                    ?>
-                                </b></span>
+                            <span><b>Daftar Data Penilaian</b></span>
                         </div>
                         <div class="card-body">
                             <!-- Menampilkan daftar alternatif -->
@@ -76,7 +68,8 @@ if (isset($_SESSION['id']) && isset($_SESSION['nama']) && $_SESSION['level'] !==
                                     <thead>
                                         <tr>
                                             <th class="small-column1" style="text-align: center;">No</th>
-                                            <th style="text-align: center; width:980px;">Nama Perguruan Tinggi</th>
+                                            <th style="text-align: center; width:980px;">Nama Paduan Suara</th>
+                                            <th style="text-align: center; width:80px;">Nomor Urut</th>
                                             <th class="small-column2" style="text-align: center;">Aksi</th>
                                         </tr>
                                     </thead>
@@ -92,270 +85,254 @@ if (isset($_SESSION['id']) && isset($_SESSION['nama']) && $_SESSION['level'] !==
                                             $sql_subkriteria = "SELECT * FROM subkriteria";
                                             $result_subkriteria = $koneksi->query($sql_subkriteria);
 
+
                                             // Cek jika query subkriteria berhasil dan hasilnya tidak kosong
                                             if ($result_subkriteria && $result_subkriteria->num_rows > 0) {
-                                                // Ambil data periode yang sedang aktif
-                                                $sql_periode_aktif = "SELECT id_periode FROM periode WHERE status_periode = 'Aktif'";
-                                                $result_periode_aktif = $koneksi->query($sql_periode_aktif);
+                                                // Loop untuk setiap item alternatif
+                                                $no = 1;
+                                                foreach ($alternatif as $alternatif_item) : ?>
+                                                    <tr>
+                                                        <td style="text-align: center;"><?= $no++ ?></td>
+                                                        <td style="text-align: left;"><?= $alternatif_item['nama_alternatif'] ?></td>
+                                                        <td style="text-align: center;"><?= $alternatif_item['nomor_urut'] ?></td>
+                                                        <?php
+                                                        // Mendefinisikan variabel untuk menampung nilai id_alternatif dari array $alternatif_item
+                                                        $id_alternatif = $alternatif_item['id_alternatif'];
 
-                                                // Jika query berhasil dan hasilnya tidak kosong
-                                                if ($result_periode_aktif && $result_periode_aktif->num_rows > 0) {
-                                                    // Ambil ID periode yang sedang aktif
-                                                    $row_periode_aktif = $result_periode_aktif->fetch_assoc();
-                                                    $id_periode_aktif = $row_periode_aktif['id_periode'];
-                                                    // Loop untuk setiap item alternatif
-                                                    // Persiapan menampilkan data
-                                                    $no = 1;
-                                                    foreach ($alternatif as $alternatif_item) : ?>
-                                                        <tr>
-                                                            <td style="text-align: center;"><?= $no++ ?></td>
-                                                            <td style="text-align: left;"><?= $alternatif_item['nama_alternatif'] ?></td>
-                                                            <?php
-                                                            // Mendefinisikan variabel untuk menampung nilai id_alternatif dari array $alternatif_item
-                                                            $id_alternatif = $alternatif_item['id_alternatif'];
+                                                        // Query untuk mengecek apakah sudah ada id_penilaian untuk alternatif saat ini
+                                                        $sql_cek_penilaian = "SELECT id_penilaian FROM penilaian WHERE id_alternatif = '$id_alternatif' AND id = '{$_SESSION['id']}'";
+                                                        $result_cek_penilaian = $koneksi->query($sql_cek_penilaian);
 
-                                                            // Query untuk mengecek apakah sudah ada id_penilaian untuk alternatif saat ini
-                                                            $sql_cek_penilaian = "SELECT id_penilaian FROM penilaian WHERE id_alternatif = '$id_alternatif' AND id_periode = '$id_periode_aktif' AND id = '{$_SESSION['id']}'";
-                                                            $result_cek_penilaian = $koneksi->query($sql_cek_penilaian);
+                                                        // Jika query berhasil dieksekusi dan ada data penilaian
+                                                        if ($result_cek_penilaian && $result_cek_penilaian->num_rows > 0) {
+                                                            // Ambil data penilaian
+                                                            $penilaian = $result_cek_penilaian->fetch_assoc();
+                                                            $id_penilaian = $penilaian['id_penilaian'];
 
-                                                            // Jika query berhasil dieksekusi dan ada data penilaian
-                                                            if ($result_cek_penilaian && $result_cek_penilaian->num_rows > 0) {
-                                                                // Ambil data penilaian
-                                                                $penilaian = $result_cek_penilaian->fetch_assoc();
-                                                                $id_penilaian = $penilaian['id_penilaian'];
-
-                                                                // Tombol aksi menjadi "Ubah"
-                                                                echo '  <td style="text-align: center;">
+                                                            // Tombol aksi menjadi "Ubah"
+                                                            echo '  <td style="text-align: center;">
                                                                         <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalUbah' . $id_alternatif . '"><i class="fa-regular fa-edit"></i> Ubah</a>
                                                                     </td>';
-                                                            } else {
-                                                                // Tombol aksi tetap "Masukkan"
-                                                                echo '  <td style="text-align: center;">
+                                                        } else {
+                                                            // Tombol aksi tetap "Masukkan"
+                                                            echo '  <td style="text-align: center;">
                                                                         <a href="#" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalTambah' . $id_alternatif . '"><i class="fa-solid fa-plus"></i> Masukkan</a>
                                                                     </td>';
-                                                            }
-                                                            ?>
-                                                        </tr>
-                                                        <?php
-                                                        // Ambil tahun dan bulan periode yang aktif dari database
-                                                        $sql_periode_aktif = "SELECT id_periode, tahun_periode, bulan_periode FROM periode WHERE status_periode = 'Aktif'";
-                                                        $result_periode_aktif = $koneksi->query($sql_periode_aktif);
-
-                                                        if ($result_periode_aktif && $result_periode_aktif->num_rows > 0) {
-                                                            $row_periode_aktif = $result_periode_aktif->fetch_assoc();
-                                                            $id_periode_aktif = $row_periode_aktif['id_periode'];
-                                                            $tahun_periode_aktif = $row_periode_aktif['tahun_periode'];
-                                                            $bulan_periode_aktif = $row_periode_aktif['bulan_periode'];
-
-                                                            // Tampilkan modal penilaian hanya jika periode yang aktif sesuai dengan periode penilaian saat ini
-                                                            if ($row['tahun_periode'] == $tahun_periode_aktif && $row['bulan_periode'] == $bulan_periode_aktif) {
-                                                        ?>
-                                                                <!-- Awal Modal Ubah -->
-                                                                <div class="modal fade modal-lg" id="modalUbah<?= $alternatif_item['id_alternatif'] ?>" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                                                                    <div class="modal-dialog">
-                                                                        <div class="modal-content">
-                                                                            <div class="modal-header">
-                                                                                <h5 class="modal-title" id="staticBackdropLabel">
-                                                                                    <span style="margin-left: 205px;">Ubah Data Penilaian Peserta Lomba</span><br>
-                                                                                    <small><strong>Nama Perguruan Tinggi:</strong> <?= htmlspecialchars($alternatif_item['nama_alternatif']) ?></small><br>
-                                                                                </h5>
-                                                                            </div>
-                                                                            <form class="row g-3" method="POST" action="penilaianAksi.php">
-                                                                                <input type="hidden" name="id_alternatif" value="<?= htmlspecialchars($alternatif_item['id_alternatif']) ?>">
-                                                                                <input type="hidden" name="id_periode" value="<?= htmlspecialchars($row_periode_aktif['id_periode']) ?>">
-                                                                                <input type="hidden" name="id_user" value="<?= htmlspecialchars($_SESSION['id']) ?>">
-                                                                                <div class="modal-body">
-                                                                                    <?php
-                                                                                    // Koneksi ke database
-                                                                                    $koneksi = connectDB();
-
-                                                                                    // Query untuk mengambil semua id_kriteria yang unik dari tabel kriteria
-                                                                                    $sql_kriteria = "SELECT DISTINCT id_kriteria, nama_kriteria FROM kriteria";
-                                                                                    $result_kriteria = $koneksi->query($sql_kriteria);
-
-                                                                                    // Ambil data dari tabel alternatif berdasarkan id_alternatif
-                                                                                    $sql_alternatif = "SELECT * FROM alternatif WHERE id_alternatif = ?";
-                                                                                    $stmt_alternatif = $koneksi->prepare($sql_alternatif);
-                                                                                    $stmt_alternatif->bind_param("i", $alternatif_item['id_alternatif']);
-                                                                                    $stmt_alternatif->execute();
-                                                                                    $result_alternatif = $stmt_alternatif->get_result();
-                                                                                    $row_alternatif = $result_alternatif->fetch_assoc();
-
-                                                                                    // Periksa apakah query kriteria berhasil dan hasilnya tidak kosong
-                                                                                    if ($result_kriteria && $result_kriteria->num_rows > 0) {
-                                                                                        while ($row_kriteria = $result_kriteria->fetch_assoc()) {
-                                                                                            $id_kriteria = $row_kriteria['id_kriteria'];
-                                                                                            $nama_kriteria = $row_kriteria['nama_kriteria'];
-
-                                                                                            // Menentukan nama field dari $nama_kriteria dan mengambil nilainya
-                                                                                            $field_name = strtolower(str_replace(' ', '_', $nama_kriteria)); // Konversi nama_kriteria menjadi nama field
-                                                                                            $judul_lagu = isset($row_alternatif[$field_name]) ? $row_alternatif[$field_name] : 'Belum ada judul lagu';
-                                                                                    ?>
-                                                                                            <div class="col-md-12 text-center">
-                                                                                                <label for="<?= htmlspecialchars($id_kriteria) ?>" class="form-label"><strong><?= htmlspecialchars($nama_kriteria) ?></strong></label><br>
-                                                                                                <small class="judullagu">Judul Lagu: <?= htmlspecialchars($judul_lagu) ?></small>
-                                                                                            </div>
-                                                                                            <div class="col-md-12">
-                                                                                                <div class="row">
-                                                                                                    <?php
-                                                                                                    // Query untuk mengambil nilai penilaian sebelumnya untuk kriteria ini
-                                                                                                    $sql_penilaian = "SELECT sub.subkriteria_id, sub.subkriteria_keterangan, pen.nilai
-                                                                                                                        FROM subkriteria sub
-                                                                                                                        LEFT JOIN penilaian pen ON sub.subkriteria_id = pen.subkriteria_id 
-                                                                                                                        AND pen.id_kriteria = $id_kriteria
-                                                                                                                        AND pen.id_alternatif = {$alternatif_item['id_alternatif']}
-                                                                                                                        AND pen.id_periode = {$row_periode_aktif['id_periode']}
-                                                                                                                        WHERE pen.id = {$_SESSION['id']}";
-                                                                                                    $result_penilaian = $koneksi->query($sql_penilaian);
-
-                                                                                                    if ($result_penilaian && $result_penilaian->num_rows > 0) {
-                                                                                                        while ($row_subkriteria = $result_penilaian->fetch_assoc()) {
-                                                                                                            $subkriteria_id = $row_subkriteria['subkriteria_id'];
-                                                                                                            $subkriteria_keterangan = $row_subkriteria['subkriteria_keterangan'];
-                                                                                                            $nilai_subkriteria = $row_subkriteria['nilai'];
-                                                                                                    ?>
-                                                                                                            <div class="col-md-6">
-                                                                                                                <label class="form-label"><?= htmlspecialchars($subkriteria_keterangan) ?></label>
-                                                                                                                <input type="number" title="Silakan masukkan nilai antara 1 sampai 100" class="form-control" name="nilai[<?= htmlspecialchars($id_kriteria) ?>][<?= htmlspecialchars($subkriteria_id) ?>]" min="1" max="100" value="<?= htmlspecialchars($nilai_subkriteria) ?>" required oninvalid="this.setCustomValidity('Nilai belum diisi atau di luar batas (1-100)')" onchange="try{setCustomValidity('')}catch(e){}">
-                                                                                                            </div>
-                                                                                                    <?php
-                                                                                                        }
-                                                                                                    } else {
-                                                                                                        echo "<div class='col-md-12'><p>Tidak ada subkriteria</p></div>";
-                                                                                                    }
-                                                                                                    ?>
-                                                                                                </div>
-                                                                                            </div>
-                                                                                            <div class="col-md-12">
-                                                                                                <hr>
-                                                                                            </div>
-                                                                                    <?php
-                                                                                        }
-                                                                                    } else {
-                                                                                        echo "<div class='col-md-12'><p>Tidak ada kriteria</p></div>";
-                                                                                    }
-                                                                                    ?>
-                                                                                </div>
-                                                                                <div class="modal-footer">
-                                                                                    <button type="button" class="btn btn-warning resetBtn" data-modalid="<?= htmlspecialchars($alternatif_item['id_alternatif']) ?>"><i class="fa-solid fa-rotate-right"></i> Reset Pilihan</button>
-                                                                                    <button type="submit" class="btn btn-primary" name="bubah"><i class="fa-regular fa-save"></i> Simpan Perubahan</button>
-                                                                                    <button type="reset" value="reset" class="btn btn-danger" data-bs-dismiss="modal"><i class="fa-solid fa-right-from-bracket"></i> Keluar</button>
-                                                                                </div>
-                                                                            </form>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                <!-- Akhir Modal Ubah -->
-
-                                                                <!-- Awal Modal Tambah -->
-                                                                <div class="modal fade modal-lg" id="modalTambah<?= htmlspecialchars($alternatif_item['id_alternatif']) ?>" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                                                                    <div class="modal-dialog">
-                                                                        <div class="modal-content">
-                                                                            <div class="modal-header">
-                                                                                <h5 class="modal-title" id="staticBackdropLabel">
-                                                                                    <span style="margin-left: 190px;">Tambah Data Penilaian Peserta Lomba</span><br>
-                                                                                    <small><strong>Nama Perguruan Tinggi:</strong> <?= htmlspecialchars($alternatif_item['nama_alternatif']) ?></small><br>
-                                                                                </h5>
-                                                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                                            </div>
-                                                                            <form class="row g-3" method="POST" action="penilaianAksi.php">
-                                                                                <input type="hidden" name="id_alternatif" value="<?= htmlspecialchars($alternatif_item['id_alternatif']) ?>">
-                                                                                <input type="hidden" name="id_periode" value="<?= htmlspecialchars($row_periode_aktif['id_periode']) ?>">
-                                                                                <input type="hidden" name="id_user" value="<?= htmlspecialchars($_SESSION['id']) ?>">
-                                                                                <div class="modal-body">
-                                                                                    <?php
-                                                                                    $koneksi = connectDB();
-                                                                                    $sql_kriteria = "SELECT DISTINCT id_kriteria, nama_kriteria FROM kriteria";
-                                                                                    $result_kriteria = $koneksi->query($sql_kriteria);
-
-                                                                                    if ($result_kriteria && $result_kriteria->num_rows > 0) {
-                                                                                        // Ambil semua data alternatif terlebih dahulu
-                                                                                        $sql_alternatif = "SELECT * FROM alternatif WHERE id_alternatif = {$alternatif_item['id_alternatif']}";
-                                                                                        $result_alternatif = $koneksi->query($sql_alternatif);
-                                                                                        $row_alternatif = $result_alternatif->fetch_assoc();
-
-                                                                                        while ($row_kriteria = $result_kriteria->fetch_assoc()) {
-                                                                                            $id_kriteria = $row_kriteria['id_kriteria'];
-                                                                                            $nama_kriteria = $row_kriteria['nama_kriteria'];
-
-                                                                                            // Menentukan nama field dari $nama_kriteria
-                                                                                            $field_name = strtolower(str_replace(' ', '_', $nama_kriteria));
-
-                                                                                            // Ambil nilai dari field yang sesuai
-                                                                                            $judul_lagu = isset($row_alternatif[$field_name]) && !empty($row_alternatif[$field_name])
-                                                                                                ? $row_alternatif[$field_name]
-                                                                                                : 'Belum ada judul lagu';
-                                                                                    ?>
-                                                                                            <div class="col-md-12 text-center">
-                                                                                                <label class="form-label"><strong><?= htmlspecialchars($nama_kriteria) ?></strong></label><br>
-                                                                                                <small class="judullagu">Judul Lagu: <?= htmlspecialchars($judul_lagu) ?></small><br>
-                                                                                            </div>
-                                                                                            <div class="col-md-12">
-                                                                                                <div class="row">
-                                                                                                    <?php
-                                                                                                    $sql_subkriteria = "SELECT subkriteria_id, subkriteria_keterangan FROM subkriteria";
-                                                                                                    $result_subkriteria = $koneksi->query($sql_subkriteria);
-
-                                                                                                    if ($result_subkriteria && $result_subkriteria->num_rows > 0) {
-                                                                                                        while ($row_subkriteria = $result_subkriteria->fetch_assoc()) {
-                                                                                                            $subkriteria_id = $row_subkriteria['subkriteria_id'];
-                                                                                                            $subkriteria_keterangan = $row_subkriteria['subkriteria_keterangan'];
-                                                                                                    ?>
-                                                                                                            <div class="col-md-6">
-                                                                                                                <label class="form-label"><?= htmlspecialchars($subkriteria_keterangan) ?></label>
-                                                                                                                <input type="number" placeholder="Masukkan nilai antara 1-100" title="Silakan masukkan nilai antara 1 sampai 100" class="form-control" name="nilai[<?= htmlspecialchars($id_kriteria) ?>][<?= htmlspecialchars($subkriteria_id) ?>]" min="1" max="100" required oninvalid="this.setCustomValidity('Nilai belum diisi atau di luar batas (1-100)')" onchange="try{setCustomValidity('')}catch(e){}">
-                                                                                                            </div>
-                                                                                                    <?php
-                                                                                                        }
-                                                                                                    } else {
-                                                                                                        echo "<div class='col-md-12'><p>Tidak ada subkriteria</p></div>";
-                                                                                                    }
-                                                                                                    ?>
-                                                                                                </div>
-                                                                                            </div>
-                                                                                            <div class="col-md-12">
-                                                                                                <hr>
-                                                                                            </div>
-                                                                                    <?php
-                                                                                        }
-                                                                                    } else {
-                                                                                        echo "<div class='col-md-12'><p>Tidak ada kriteria</p></div>";
-                                                                                    }
-                                                                                    ?>
-                                                                                </div>
-                                                                                <div class="modal-footer">
-                                                                                    <button type="submit" class="btn btn-primary" name="bsimpan"><i class="fa-regular fa-floppy-disk"></i> Simpan</button>
-                                                                                    <button type="reset" class="btn btn-danger" data-bs-dismiss="modal"><i class="fa-solid fa-right-from-bracket"></i> Keluar</button>
-                                                                                </div>
-                                                                            </form>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                <!-- Akhir Modal Tambah -->
-
-                                                        <?php
-                                                            }
-                                                        } else {
-                                                            // Tidak ada periode aktif, tidak menampilkan modal
-                                                            echo "Tidak ada periode aktif";
                                                         }
                                                         ?>
-                                            <?php
-                                                    endforeach;
-                                                } else {
-                                                    echo "Tidak ada data subkriteria.";
-                                                }
+                                                    </tr>
+                                                    <?php
+                                                    // Tampilkan modal penilaian
+                                                    ?>
+                                                    <!-- Awal Modal Ubah -->
+                                                    <div class="modal fade modal-lg" id="modalUbah<?= $alternatif_item['id_alternatif'] ?>" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                                                        <div class="modal-dialog">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <h5 class="modal-title" id="staticBackdropLabel">
+                                                                        <span style="margin-left: 205px;">Ubah Data Penilaian Peserta Lomba</span><br>
+                                                                        <small><strong>Nama Paduan Suara:</strong> <?= htmlspecialchars($alternatif_item['nama_alternatif']) ?></small><br>
+                                                                    </h5>
+                                                                </div>
+                                                                <form class="row g-3" method="POST" action="penilaianAksi.php">
+                                                                    <input type="hidden" name="id_alternatif" value="<?= htmlspecialchars($alternatif_item['id_alternatif']) ?>">
+                                                                    <input type="hidden" name="id_user" value="<?= htmlspecialchars($_SESSION['id']) ?>">
+                                                                    <div class="modal-body">
+                                                                        <?php
+                                                                        // Koneksi ke database
+                                                                        $koneksi = connectDB();
+
+                                                                        // Query untuk mengambil semua id_kriteria yang unik dari tabel kriteria
+                                                                        $sql_kriteria = "SELECT DISTINCT id_kriteria, nama_kriteria FROM kriteria";
+                                                                        $result_kriteria = $koneksi->query($sql_kriteria);
+
+                                                                        // Ambil data dari tabel alternatif berdasarkan id_alternatif
+                                                                        $sql_alternatif = "SELECT lagu_pertama, lagu_kedua FROM alternatif WHERE id_alternatif = ?";
+                                                                        $stmt_alternatif = $koneksi->prepare($sql_alternatif);
+                                                                        $stmt_alternatif->bind_param("i", $alternatif_item['id_alternatif']);
+                                                                        $stmt_alternatif->execute();
+                                                                        $result_alternatif = $stmt_alternatif->get_result();
+                                                                        $row_alternatif = $result_alternatif->fetch_assoc();
+
+                                                                        // Periksa apakah query kriteria berhasil dan hasilnya tidak kosong
+                                                                        if ($result_kriteria && $result_kriteria->num_rows > 0) {
+                                                                            while ($row_kriteria = $result_kriteria->fetch_assoc()) {
+                                                                                $id_kriteria = $row_kriteria['id_kriteria'];
+                                                                                $nama_kriteria = $row_kriteria['nama_kriteria'];
+
+                                                                                // Ambil judul lagu berdasarkan id_kriteria
+                                                                                $judul_lagu = '';
+                                                                                if ($id_kriteria == 2) {
+                                                                                    $judul_lagu = isset($row_alternatif['lagu_pertama']) ? $row_alternatif['lagu_pertama'] : 'Belum ada judul lagu';
+                                                                                } elseif ($id_kriteria == 4) {
+                                                                                    $judul_lagu = isset($row_alternatif['lagu_kedua']) ? $row_alternatif['lagu_kedua'] : 'Belum ada judul lagu';
+                                                                                }
+                                                                                // Tambahkan kondisi untuk lebih banyak lagu jika ada
+
+                                                                        ?>
+                                                                                <div class="col-md-12 text-center">
+                                                                                    <label for="<?= htmlspecialchars($id_kriteria) ?>" class="form-label"><strong><?= htmlspecialchars($nama_kriteria) ?></strong></label><br>
+                                                                                    <small class="judullagu">Judul Lagu: <?= htmlspecialchars($judul_lagu) ?></small>
+                                                                                </div>
+                                                                                <div class="col-md-12">
+                                                                                    <div class="row">
+                                                                                        <?php
+                                                                                        // Query untuk mengambil nilai penilaian sebelumnya untuk kriteria ini
+                                                                                        $sql_penilaian = "SELECT sub.subkriteria_id, sub.subkriteria_keterangan, pen.nilai, pen.komentar
+                                                                                                            FROM subkriteria sub
+                                                                                                            LEFT JOIN penilaian pen ON sub.subkriteria_id = pen.subkriteria_id 
+                                                                                                            AND pen.id_kriteria = $id_kriteria
+                                                                                                            AND pen.id_alternatif = {$alternatif_item['id_alternatif']}
+                                                                                                            WHERE pen.id = {$_SESSION['id']}";
+                                                                                        $result_penilaian = $koneksi->query($sql_penilaian);
+
+                                                                                        if ($result_penilaian && $result_penilaian->num_rows > 0) {
+                                                                                            while ($row_subkriteria = $result_penilaian->fetch_assoc()) {
+                                                                                                $subkriteria_id = $row_subkriteria['subkriteria_id'];
+                                                                                                $subkriteria_keterangan = $row_subkriteria['subkriteria_keterangan'];
+                                                                                                $nilai_subkriteria = $row_subkriteria['nilai'];
+                                                                                                $komentar_subkriteria = $row_subkriteria['komentar']; // Ambil komentar
+                                                                                        ?>
+                                                                                                <div class="col-md-6">
+                                                                                                    <label class="form-label"><?= htmlspecialchars($subkriteria_keterangan) ?></label>
+                                                                                                    <input type="text" title="Silakan masukkan nilai antara 1 sampai 100" class="form-control" name="nilai[<?= htmlspecialchars($id_kriteria) ?>][<?= htmlspecialchars($subkriteria_id) ?>]" min="1" max="100" value="<?= htmlspecialchars($nilai_subkriteria) ?>" required pattern="^(100(\.0+)?|[1-9]?\d(\.\d+)?)$" oninvalid="this.setCustomValidity('Nilai belum diisi atau di luar batas (1-100)')" onchange="try{setCustomValidity('')}catch(e){}" autocomplete="off">
+                                                                                                </div>
+                                                                                        <?php
+                                                                                            }
+                                                                                        } else {
+                                                                                            echo "<div class='col-md-12'><p>Tidak ada subkriteria</p></div>";
+                                                                                        }
+                                                                                        ?>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-md-12">
+                                                                                    <hr>
+                                                                                    <!-- Tambahkan textarea untuk komentar -->
+                                                                                    <label for="komentar_<?= htmlspecialchars($id_kriteria) ?>" class="form-label text-center d-block">Komentar:</label>
+                                                                                    <textarea class="form-control" name="komentar[<?= htmlspecialchars($id_kriteria) ?>]" id="komentar_<?= htmlspecialchars($id_kriteria) ?>" rows="3" placeholder="Memberikan komentar untuk lagu ini"><?= htmlspecialchars($komentar_subkriteria) ?></textarea>
+                                                                                </div>
+                                                                                <div class="col-md-12">
+                                                                                    <hr>
+                                                                                </div>
+                                                                        <?php
+                                                                            }
+                                                                        } else {
+                                                                            echo "<div class='col-md-12'><p>Tidak ada kriteria</p></div>";
+                                                                        }
+                                                                        ?>
+                                                                    </div>
+                                                                    <div class="modal-footer">
+                                                                        <button type="submit" class="btn btn-primary" name="bubah"><i class="fa-regular fa-save"></i> Simpan Perubahan</button>
+                                                                        <button type="reset" value="reset" class="btn btn-danger" data-bs-dismiss="modal"><i class="fa-solid fa-right-from-bracket"></i> Keluar</button>
+                                                                    </div>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!-- Akhir Modal Ubah -->
+
+                                                    <!-- Awal Modal Tambah -->
+                                                    <div class="modal fade modal-lg" id="modalTambah<?= htmlspecialchars($alternatif_item['id_alternatif']) ?>" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                                                        <div class="modal-dialog">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <h5 class="modal-title" id="staticBackdropLabel">
+                                                                        <span style="margin-left: 190px;">Tambah Data Penilaian Peserta Lomba</span><br>
+                                                                        <small><strong>Nama Paduan Suara:</strong> <?= htmlspecialchars($alternatif_item['nama_alternatif']) ?></small><br>
+                                                                    </h5>
+                                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                </div>
+                                                                <form class="row g-3" method="POST" action="penilaianAksi.php">
+                                                                    <input type="hidden" name="id_alternatif" value="<?= htmlspecialchars($alternatif_item['id_alternatif']) ?>">
+                                                                    <input type="hidden" name="id_user" value="<?= htmlspecialchars($_SESSION['id']) ?>">
+                                                                    <div class="modal-body">
+                                                                        <?php
+                                                                        $koneksi = connectDB();
+                                                                        $sql_kriteria = "SELECT DISTINCT id_kriteria, nama_kriteria FROM kriteria";
+                                                                        $result_kriteria = $koneksi->query($sql_kriteria);
+
+                                                                        if ($result_kriteria && $result_kriteria->num_rows > 0) {
+                                                                            // Ambil semua data alternatif terlebih dahulu
+                                                                            $sql_alternatif = "SELECT * FROM alternatif WHERE id_alternatif = {$alternatif_item['id_alternatif']}";
+                                                                            $result_alternatif = $koneksi->query($sql_alternatif);
+                                                                            $row_alternatif = $result_alternatif->fetch_assoc();
+
+                                                                            while ($row_kriteria = $result_kriteria->fetch_assoc()) {
+                                                                                $id_kriteria = $row_kriteria['id_kriteria'];
+                                                                                $nama_kriteria = $row_kriteria['nama_kriteria'];
+                                                                                // Ambil judul lagu berdasarkan id_kriteria
+                                                                                $judul_lagu = '';
+                                                                                if ($id_kriteria == 2) {
+                                                                                    $judul_lagu = isset($row_alternatif['lagu_pertama']) ? $row_alternatif['lagu_pertama'] : 'Belum ada judul lagu';
+                                                                                } elseif ($id_kriteria == 4) {
+                                                                                    $judul_lagu = isset($row_alternatif['lagu_kedua']) ? $row_alternatif['lagu_kedua'] : 'Belum ada judul lagu';
+                                                                                }
+                                                                                // Tambahkan kondisi untuk lebih banyak lagu jika ada
+
+                                                                        ?>
+                                                                                <div class="col-md-12 text-center">
+                                                                                    <label for="<?= htmlspecialchars($id_kriteria) ?>" class="form-label"><strong><?= htmlspecialchars($nama_kriteria) ?></strong></label><br>
+                                                                                    <small class="judullagu">Judul Lagu: <?= htmlspecialchars($judul_lagu) ?></small>
+                                                                                </div>
+                                                                                <div class="col-md-12">
+                                                                                    <div class="row">
+                                                                                        <?php
+                                                                                        $sql_subkriteria = "SELECT subkriteria_id, subkriteria_keterangan FROM subkriteria";
+                                                                                        $result_subkriteria = $koneksi->query($sql_subkriteria);
+
+                                                                                        if ($result_subkriteria && $result_subkriteria->num_rows > 0) {
+                                                                                            while ($row_subkriteria = $result_subkriteria->fetch_assoc()) {
+                                                                                                $subkriteria_id = $row_subkriteria['subkriteria_id'];
+                                                                                                $subkriteria_keterangan = $row_subkriteria['subkriteria_keterangan'];
+                                                                                        ?>
+                                                                                                <div class="col-md-6">
+                                                                                                    <label class="form-label"><?= htmlspecialchars($subkriteria_keterangan) ?></label>
+                                                                                                    <input type="text" placeholder="Masukkan nilai antara 1-100" title="Silakan masukkan nilai antara 1 sampai 100" class="form-control" name="nilai[<?= htmlspecialchars($id_kriteria) ?>][<?= htmlspecialchars($subkriteria_id) ?>]" min="1" max="100" required pattern="^(100(\.0+)?|[1-9]?\d(\.\d+)?)$" oninvalid="this.setCustomValidity('Nilai belum diisi atau di luar batas (1-100)')" onchange="try{setCustomValidity('')}catch(e){}" autocomplete="off">
+                                                                                                </div>
+                                                                                        <?php
+                                                                                            }
+                                                                                        } else {
+                                                                                            echo "<div class='col-md-12'><p>Tidak ada subkriteria</p></div>";
+                                                                                        }
+                                                                                        ?>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-md-12">
+                                                                                    <hr>
+                                                                                    <!-- Tambahkan textarea untuk komentar -->
+                                                                                    <label for="komentar_<?= htmlspecialchars($id_kriteria) ?>" class="form-label text-center d-block">Komentar:</label>
+                                                                                    <textarea class="form-control" name="komentar[<?= htmlspecialchars($id_kriteria) ?>]" id="komentar_<?= htmlspecialchars($id_kriteria) ?>" rows="3" placeholder="Memberikan komentar untuk lagu ini"></textarea>
+                                                                                </div>
+                                                                                <div class="col-md-12">
+                                                                                    <hr>
+                                                                                </div>
+                                                                        <?php
+                                                                            }
+                                                                        } else {
+                                                                            echo "<div class='col-md-12'><p>Tidak ada kriteria</p></div>";
+                                                                        }
+                                                                        ?>
+                                                                    </div>
+                                                                    <div class="modal-footer">
+                                                                        <button type="submit" class="btn btn-primary" name="bsimpan"><i class="fa-regular fa-floppy-disk"></i> Simpan</button>
+                                                                        <button type="reset" class="btn btn-danger" data-bs-dismiss="modal"><i class="fa-solid fa-right-from-bracket"></i> Keluar</button>
+                                                                    </div>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!-- Akhir Modal Tambah -->
+                                        <?php
+                                                endforeach;
                                             } else {
-                                                echo "Tidak ada data kriteria.";
+                                                echo "<tr><td colspan='3'>Tidak ada subkriteria</td></tr>";
                                             }
-                                            ?>
-                                    </tbody>
-                                <?php
                                         } else {
-                                            // Jika tidak ada periode aktif
-                                            echo "<tr><td colspan='4' style='text-align:center;'>Tidak ada periode aktif</td></tr>";
+                                            echo "<tr><td colspan='3'>Tidak ada kriteria</td></tr>";
                                         }
-                                ?>
+                                        ?>
+                                    </tbody>
+
                                 </table>
                             <?php else : ?>
                                 <p>Tidak ada alternatif.</p>
@@ -377,29 +354,6 @@ if (isset($_SESSION['id']) && isset($_SESSION['nama']) && $_SESSION['level'] !==
 
         <script>
             new DataTable('#example');
-        </script>
-        <script>
-            // Fungsi untuk mereset nilai input number pada modal ubah
-            function resetPilihan(button) {
-                // Temukan modal yang mengandung tombol reset
-                var modal = button.closest('.modal-content');
-                // Temukan semua input number di dalam modal
-                var inputs = modal.querySelectorAll('input[type="number"]');
-                // Atur nilai semua input number menjadi default ('')
-                inputs.forEach(function(input) {
-                    input.value = '';
-                    input.placeholder = 'Masukkan nilai antara 1-100';
-                });
-            }
-
-            // Menambahkan event listener untuk klik tombol reset
-            document.addEventListener('DOMContentLoaded', function() {
-                document.querySelectorAll('.resetBtn').forEach(function(button) {
-                    button.addEventListener('click', function() {
-                        resetPilihan(this);
-                    });
-                });
-            });
         </script>
 
     </body>

@@ -38,7 +38,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['nama']) && $_SESSION['level'] !==
             $nama = $_POST['tnama'];
             $namal = $_POST['tnamal'];
             $email = $_POST['temail'];
-            $katasandi = md5($_POST['tpass']);
+            $katasandi = $_POST['tpass'];
             $level = $_POST['tlevel'];
 
             // Koneksi ke database

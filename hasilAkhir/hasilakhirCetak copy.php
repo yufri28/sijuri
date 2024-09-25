@@ -106,26 +106,18 @@ if (isset($_SESSION['id']) && isset($_SESSION['nama'])) {
 
     // Tambahkan teks di sebelah logo dengan style tebal (bold)
     $pdf->SetXY(17, 19);
-    $pdf->SetFont('helvetica', 'B', 12);
+    $pdf->SetFont('helvetica', 'B', 11);
     $pdf->Cell(0, 10, 'Laporan Hasil Akhir Penilaian Lomba Paduan Suara Mahasiswa Nasional XVIII', 0, 0, 'C');
 
-// Tambahkan tanggal cetak di ujung kanan atas
-$tanggal = date('d F Y');
-
-// Mengatur posisi
-$pdf->SetXY(312 - $pdf->GetStringWidth('Tanggal: ' . $tanggal), 0);
-
-// Mengatur font khusus untuk tanggal
-$pdf->SetFont('helvetica', '', 11);// Misalnya, menggunakan font "times" dengan italic dan ukuran 10
-$pdf->Cell(89, 10, 'Tanggal: ' . $tanggal, 0, 0, 'C');
-
-// Kembalikan font ke default setelah menampilkan tanggal
-$pdf->SetFont('helvetica', '', 9); // Font default untuk konten lainnya
-
+    // Tambahkan tanggal cetak di ujung kanan atas
+    $tanggal = date('d F Y');
+    $pdf->SetXY(312 - $pdf->GetStringWidth('Tanggal: ' . $tanggal), 0);
+    $pdf->SetFont('helvetica', '', 9);
+    $pdf->Cell(0, 10, 'Tanggal: ' . $tanggal, 0, 0, 'C');
 
     // Tambahkan garis di bawah judul dan teks, perpanjang ke kanan
     $pdf->SetXY(5, 25);
-    $pdf->Cell(319, 0, '', 'B', 1, 'C');
+    $pdf->Cell(285, 0, '', 'B', 1, 'C');
 
     // Set posisi X dan Y untuk menempatkan tabel di tengah halaman
     $pdf->SetXY(5, 35);
@@ -139,13 +131,13 @@ $pdf->SetFont('helvetica', '', 9); // Font default untuk konten lainnya
 
     // Tambahkan kolom untuk setiap user
     foreach ($users as $index => $user) {
-        $html .= '<th style="text-align: center; font-weight: bold; width: 57px;" title="Nilai dari ' . $user['nama_lengkap'] . '">Nilai Juri ' . ($index + 1) . '</th>
-                  <th style="text-align: center; font-weight: bold; width: 57px;">Peringkat</th>';
+        $html .= '<th style="text-align: center; font-weight: bold; width: 45px;" title="Nilai dari ' . $user['nama_lengkap'] . '">Nilai Juri ' . ($index + 1) . '</th>
+                  <th style="text-align: center; font-weight: bold;">Peringkat</th>';
     }
 
     $html .= '<th style="text-align: center; font-weight: bold;">Hasil Akhir</th>
                       <th style="text-align: center; font-weight: bold; width: 55px;">Kelompok</th>
-                      <th style="text-align: center; font-weight: bold; width: 95px;">Akumulasi Predikat</th>
+                      <th style="text-align: center; font-weight: bold; width: 56px;">Akumulasi Predikat</th>
                     </tr>
                   </thead>
                   <tbody>';
@@ -166,17 +158,17 @@ $pdf->SetFont('helvetica', '', 9); // Font default untuk konten lainnya
             $result_nilai = $koneksi->query($sql_nilai);
             $nilai = ($result_nilai && $result_nilai->num_rows > 0) ? number_format($result_nilai->fetch_assoc()['nilai_akhir'], 3) : '-';
 
-            $html .= '<td style="text-align: center; width: 57px;">';
+            $html .= '<td style="text-align: center; width: 45px;">';
             $html .= $nilai != '-' ? $nilai : '<div style="color: red;">Belum diberikan nilai</div>';
             $html .= '</td>';
             // Peringkat
-            $html .= '<td style="text-align: center; width: 57px;">' . (isset($peringkat[$alt['id_alternatif']][$id_user]) ? $peringkat[$alt['id_alternatif']][$id_user] : '-') . '</td>';
+            $html .= '<td style="text-align: center;">' . (isset($peringkat[$alt['id_alternatif']][$id_user]) ? $peringkat[$alt['id_alternatif']][$id_user] : '-') . '</td>';
         }
 
         // Tambahkan kolom Hasil Akhir, Kelompok, dan Akumulasi Predikat
         $html .= '<td style="text-align: center;">' . number_format($nilai_akhir[$alt['id_alternatif']], 3) . '</td>
                           <td style="text-align: center; width: 55px;">' . getKelompok(number_format($nilai_akhir[$alt['id_alternatif']], 3)) . '</td>
-                          <td style="text-align: center; width: 95px;">' . $akumulasi_predikat[$alt['id_alternatif']] . '</td>
+                          <td style="text-align: center; width: 56px;">' . $akumulasi_predikat[$alt['id_alternatif']] . '</td>
                       </tr>';
     }
     $html .= '</tbody></table>';
