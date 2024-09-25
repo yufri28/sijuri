@@ -26,16 +26,16 @@ if (isset($_SESSION['id']) && isset($_SESSION['nama']) && $_SESSION['level'] !==
         if (isset($_POST['bsimpan'])) {
             // Mengambil data dari form
             $nama_alternatif = $_POST['tnama'];
-            $terakhir = $_POST['tterakhir'];
-            $musica_sacra = $_POST['tmusica_sacra'];
-            $traditional_gospel = $_POST['ttraditional_gospel'];
+            $nomor_urut = $_POST['turut'];
+            $lagupertama = $_POST['tlagupertama'];
+            $lagukedua = $_POST['tlagukedua'];
 
             // Koneksi ke database
             $koneksi = connectDB();
             // Periksa apakah nama sudah ada untuk periode penilaian tertentu
-            $sqlCheck = "SELECT * FROM alternatif WHERE nama_alternatif = ? AND periode_penilaian = ?";
+            $sqlCheck = "SELECT * FROM alternatif WHERE nama_alternatif = ?";
             $stmtCheck = $koneksi->prepare($sqlCheck);
-            $stmtCheck->bind_param("ss", $nama_alternatif, $terakhir);
+            $stmtCheck->bind_param("s", $nama_alternatif);
             $stmtCheck->execute();
             $resultCheck = $stmtCheck->get_result();
 
@@ -54,12 +54,12 @@ if (isset($_SESSION['id']) && isset($_SESSION['nama']) && $_SESSION['level'] !==
                 <?php
             } else {
                 // Persiapan simpan data baru
-                $simpan = "INSERT INTO alternatif (nama_alternatif, periode_penilaian, musica_sacra, traditional_gospel)
+                $simpan = "INSERT INTO alternatif (nama_alternatif, nomor_urut, lagu_pertama, lagu_kedua)
                    VALUES (?, ?, ?, ?)";
 
                 // Menjalankan query
                 $stmt = $koneksi->prepare($simpan);
-                $stmt->bind_param("ssss", $nama_alternatif, $terakhir, $musica_sacra, $traditional_gospel);
+                $stmt->bind_param("ssss", $nama_alternatif, $nomor_urut, $lagupertama, $lagukedua);
 
                 if ($stmt->execute()) {
                 ?>
@@ -101,9 +101,9 @@ if (isset($_SESSION['id']) && isset($_SESSION['nama']) && $_SESSION['level'] !==
             // Mengambil data dari form
             $id_alternatif = $_POST['id_alternatif'];
             $nama_alternatif = $_POST['tnama'];
-            $terakhir = $_POST['tterakhir'];
-            $musica_sacra = $_POST['tmusica_sacra'];
-            $traditional_gospel = $_POST['ttraditional_gospel'];
+            $nomor_urut = $_POST['turut'];
+            $lagupertama = $_POST['tlagupertama'];
+            $lagukedua = $_POST['tlagukedua'];
 
             // Koneksi ke database
             $koneksi = connectDB();
@@ -111,14 +111,14 @@ if (isset($_SESSION['id']) && isset($_SESSION['nama']) && $_SESSION['level'] !==
             // Persiapan ubah data
             $ubah = "UPDATE alternatif SET 
                         nama_alternatif = ?,
-                        periode_penilaian = ?,
-                        musica_sacra = ?,
-                        traditional_gospel = ?
+                        nomor_urut = ?,
+                        lagu_pertama = ?,
+                        lagu_kedua = ?
                     WHERE id_alternatif = ?";
 
             // Menjalankan query
             $stmt = $koneksi->prepare($ubah);
-            $stmt->bind_param("sssss", $nama_alternatif, $terakhir, $musica_sacra, $traditional_gospel, $id_alternatif);
+            $stmt->bind_param("sisss", $nama_alternatif, $nomor_urut, $lagupertama, $lagukedua, $id_alternatif);
 
             if ($stmt->execute()) {
                 ?>
