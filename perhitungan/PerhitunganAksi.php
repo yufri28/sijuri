@@ -90,6 +90,24 @@ function getSubkriteria($koneksi)
         return [];
     }
 }
+// // Fungsi untuk mendapatkan nilai akhir dari setiap alternatif
+// function getNilaiAkhir($koneksi)
+// {
+//     $nilai_akhir = [];
+//     $sql = "SELECT id_alternatif, AVG(nilai_akhir) AS nilai_akhir 
+//             FROM penilaian 
+//             GROUP BY id_alternatif";
+//     $result = $koneksi->query($sql);
+
+//     if ($result && $result->num_rows > 0) {
+//         while ($row = $result->fetch_assoc()) {
+//             $nilai_akhir[$row['id_alternatif']] = $row['nilai_akhir'];
+//         }
+//     }
+
+//     return $nilai_akhir;
+// }
+
 // Fungsi untuk mendapatkan nilai akhir dari setiap alternatif
 function getNilaiAkhir($koneksi)
 {

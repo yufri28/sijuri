@@ -702,3 +702,31 @@ input:valid ~ .show-hide-profil i {
   display: block;
 }
 /* ==== END PROFIL VIEW ==== */
+
+/* ==== START KOMENTAR VIEW ==== */
+.lagu-pertama {
+  font-family: 'Arial', sans-serif; /* Ganti dengan font yang diinginkan */
+  font-size: 18px; /* Ganti dengan ukuran font yang diinginkan */
+  font-style: italic; /* Jika ingin teks menjadi miring */
+  font-weight: bold; /* Jika ingin teks menjadi tebal */
+}
+
+.lagu-kedua {
+  font-family: 'Arial', sans-serif; /* Ganti dengan font yang diinginkan */
+  font-size: 18px; /* Ganti dengan ukuran font yang diinginkan */
+  font-style: italic; /* Jika ingin teks menjadi miring */
+  font-weight: bold; /* Jika ingin teks menjadi tebal */
+}
+
+.komentar {
+  font-family: 'Arial', sans-serif; /* Ubah ke font yang diinginkan */
+  font-size: 14px; /* Ukuran font untuk komentar */
+}
+
+.nama-komentator {
+  font-family: 'Verdana', sans-serif; /* Ubah ke font yang diinginkan */
+  font-size: 14px; /* Ukuran font untuk nama komentator */
+  color: #555; /* Warna untuk nama komentator */
+  font-weight: bold; /* Jika ingin teks menjadi tebal */
+}
+/* ==== END KOMENTAR VIEW ==== */
