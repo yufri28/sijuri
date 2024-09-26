@@ -68,9 +68,14 @@ if (isset($_SESSION['id']) && isset($_SESSION['nama'])) {
         <link rel="stylesheet" href="https://cdn.datatables.net/2.0.2/css/dataTables.bootstrap5.css">
         <!-- Chart -->
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <style>
+        .home-section {
+            background: none; /* Hilangkan background */
+        }
+            </style>
     </head>
 
-    <body>
+    <body class="custom-bgg">
         <?php include "../assets/basic/sidebar.php"; ?>
         <section class="home-section">
             <div class="text">Data Hasil Akhir
@@ -85,13 +90,13 @@ if (isset($_SESSION['id']) && isset($_SESSION['nama'])) {
                                     <div class="fa-solid fa-print"></div><span class="ms-2">Cetak Data</span>
                                 </button>
                             </div>
-                            <div class="table-responsive">
+                            <div class="table-responsive custom-table">
                                 <?php if (!empty($alternatif)) : ?>
                                     <table id="example" class="table table-striped" style="width:100%">
                                         <thead>
                                             <tr>
                                                 <th style="text-align: center;">No</th>
-                                                <th style="text-align: center;">Nama Paduan Suara</th>
+                                                <th style="text-align: center; width: 50px;">Nama Paduan Suara</th>
                                                 <?php foreach ($users as $index => $user) : ?>
                                                     <th style="text-align: center;" title="Nilai dari <?= $user['nama_lengkap'] ?>">
                                                         Nilai Juri <?= $index + 1 ?></th>
@@ -119,7 +124,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['nama'])) {
                                                             <?php if ($nilai != '-') : ?>
                                                                 <?= number_format($nilai, 3); ?>
                                                             <?php else : ?>
-                                                                <div class="alert alert-danger alert-dismissible fade show py-1 px-2 m-0"
+                                                                <div style= "width:100px;" class="alert alert-danger alert-dismissible fade show py-1 px-2 m-0"
                                                                     role="alert" style="font-size: 0.8rem;">
                                                                     Belum diberikan nilai
                                                                 </div>

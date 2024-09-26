@@ -645,7 +645,20 @@ th {
 .periode-cetak .btn {
   margin-bottom: 6px;
 }
+.custom-bgg {
+  background: 
+      url("../img/bgberanda.jpg") no-repeat center center,
+      linear-gradient(to bottom, #afdfad, #afdfad); /* Ganti #afdfad dengan warna yang diinginkan */
+  background-size: cover;
+  height: 100vh; /* Sesuaikan tinggi sesuai kebutuhan */
+}
 
+.table-responsive {
+  overflow-x: auto; /* Mengizinkan scroll ke samping */
+}
+.custom-table {
+  min-width: 2000px; /* Atur minimal width tabel, bisa disesuaikan */
+}
 /* ==== END HASIL AKHIR VIEW ==== */
 
 /* ==== START DATA USER VIEW ==== */
@@ -705,26 +718,26 @@ input:valid ~ .show-hide-profil i {
 
 /* ==== START KOMENTAR VIEW ==== */
 .lagu-pertama {
-  font-family: 'Arial', sans-serif; /* Ganti dengan font yang diinginkan */
+  font-family: "Arial", sans-serif; /* Ganti dengan font yang diinginkan */
   font-size: 18px; /* Ganti dengan ukuran font yang diinginkan */
   font-style: italic; /* Jika ingin teks menjadi miring */
   font-weight: bold; /* Jika ingin teks menjadi tebal */
 }
 
 .lagu-kedua {
-  font-family: 'Arial', sans-serif; /* Ganti dengan font yang diinginkan */
+  font-family: "Arial", sans-serif; /* Ganti dengan font yang diinginkan */
   font-size: 18px; /* Ganti dengan ukuran font yang diinginkan */
   font-style: italic; /* Jika ingin teks menjadi miring */
   font-weight: bold; /* Jika ingin teks menjadi tebal */
 }
 
 .komentar {
-  font-family: 'Arial', sans-serif; /* Ubah ke font yang diinginkan */
+  font-family: "Arial", sans-serif; /* Ubah ke font yang diinginkan */
   font-size: 14px; /* Ukuran font untuk komentar */
 }
 
 .nama-komentator {
-  font-family: 'Verdana', sans-serif; /* Ubah ke font yang diinginkan */
+  font-family: "Verdana", sans-serif; /* Ubah ke font yang diinginkan */
   font-size: 14px; /* Ukuran font untuk nama komentator */
   color: #555; /* Warna untuk nama komentator */
   font-weight: bold; /* Jika ingin teks menjadi tebal */

@@ -90,41 +90,27 @@ function getSubkriteria($koneksi)
         return [];
     }
 }
-// // Fungsi untuk mendapatkan nilai akhir dari setiap alternatif
-// function getNilaiAkhir($koneksi)
-// {
-//     $nilai_akhir = [];
-//     $sql = "SELECT id_alternatif, AVG(nilai_akhir) AS nilai_akhir 
-//             FROM penilaian 
-//             GROUP BY id_alternatif";
-//     $result = $koneksi->query($sql);
 
-//     if ($result && $result->num_rows > 0) {
-//         while ($row = $result->fetch_assoc()) {
-//             $nilai_akhir[$row['id_alternatif']] = $row['nilai_akhir'];
-//         }
-//     }
-
-//     return $nilai_akhir;
-// }
-
-// Fungsi untuk mendapatkan nilai akhir dari setiap alternatif
+// Fungsi untuk mendapatkan nilai akhir dari setiap alternatif dan membaginya dengan 5
 function getNilaiAkhir($koneksi)
 {
     $nilai_akhir = [];
-    $sql = "SELECT id_alternatif, AVG(nilai_akhir) AS nilai_akhir 
+    // Query untuk menghitung jumlah nilai_akhir unik per id_alternatif dan id_user
+    $sql = "SELECT id_alternatif, SUM(DISTINCT nilai_akhir) / 5 AS nilai_akhir
             FROM penilaian 
-            GROUP BY id_alternatif";
+            GROUP BY id_alternatif"; // Mengelompokkan berdasarkan id_alternatif saja
     $result = $koneksi->query($sql);
 
     if ($result && $result->num_rows > 0) {
         while ($row = $result->fetch_assoc()) {
+            // Menyimpan nilai_akhir yang telah dijumlahkan dan dibagi 5 untuk tiap id_alternatif
             $nilai_akhir[$row['id_alternatif']] = $row['nilai_akhir'];
         }
     }
 
     return $nilai_akhir;
 }
+
 
 // Fungsi untuk mendapatkan peringkat berdasarkan nilai hasil akhir
 // Fungsi untuk memberikan peringkat pada data

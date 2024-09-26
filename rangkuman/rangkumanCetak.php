@@ -159,7 +159,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['nama'])) {
     }
 
     if (isset($komentar_per_kriteria[4])) { // Kriteria 4: Lagu Kedua
-        $pdf->SetXY(20, $pdf->GetY() + 10);
+        $pdf->SetXY(20, $pdf->GetY() + 2);
 
         // Tampilkan judul "Lagu Kedua" dengan huruf tebal dan di tengah
         $pdf->SetFont('helvetica', 'B', 15); // Mengatur font menjadi helvetica, Bold, ukuran 12
@@ -213,7 +213,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['nama'])) {
                 $html_tanda_tangan .= '</tr><tr>';
             }
             $juri_number = $index + 1;
-            $html_tanda_tangan .= '<td style="width: 20%;">Juri ' . $juri_number . '<br><br><br><br>(' . htmlspecialchars($user['nama_lengkap']) . ')</td>';
+            $html_tanda_tangan .= '<td style="width: 20%; font-size: 13px;">Juri ' . $juri_number . '<br><br><br><br>(' . htmlspecialchars($user['nama_lengkap']) . ')</td>';
             $count++;
         }
 

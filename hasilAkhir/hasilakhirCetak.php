@@ -54,8 +54,8 @@ if (isset($_SESSION['id']) && isset($_SESSION['nama'])) {
     // Atur informasi dokumen
     $pdf->SetCreator(PDF_CREATOR);
     $pdf->SetAuthor('Nama Pengarang');
-    $pdf->SetTitle('Data Hasil Akhir');
-    $pdf->SetSubject('Data Hasil Akhir');
+    $pdf->SetTitle('Laporan Hasil Akhir Penilaian Lomba PSM Nasional XVIII');
+    $pdf->SetSubject('Laporan Hasil Akhir Penilaian Lomba PSM Nasional XVIII');
     $pdf->SetKeywords('TCPDF, tabel, hasil akhir');
 
     // Atur margin
@@ -155,7 +155,7 @@ $pdf->SetFont('helvetica', '', 9); // Font default untuk konten lainnya
     foreach ($alternatif as $index => $alt) {
         $html .= '<tr>
                 <td style="text-align: center; width: 23px;">' . $no++ . '</td>
-                <td style="text-align: left; width: 103px;">' . $alt['nama_alternatif'] . '</td>';
+                <td style="text-align: left; width: 103px; font-size: 11px;">' . $alt['nama_alternatif'] . '</td>';
 
         // Loop untuk menambahkan nilai dan peringkat dari setiap user
         foreach ($users as $user) {
@@ -166,17 +166,17 @@ $pdf->SetFont('helvetica', '', 9); // Font default untuk konten lainnya
             $result_nilai = $koneksi->query($sql_nilai);
             $nilai = ($result_nilai && $result_nilai->num_rows > 0) ? number_format($result_nilai->fetch_assoc()['nilai_akhir'], 3) : '-';
 
-            $html .= '<td style="text-align: center; width: 57px;">';
+            $html .= '<td style="text-align: center; width: 57px; font-size: 11px;">';
             $html .= $nilai != '-' ? $nilai : '<div style="color: red;">Belum diberikan nilai</div>';
             $html .= '</td>';
             // Peringkat
-            $html .= '<td style="text-align: center; width: 57px;">' . (isset($peringkat[$alt['id_alternatif']][$id_user]) ? $peringkat[$alt['id_alternatif']][$id_user] : '-') . '</td>';
+            $html .= '<td style="text-align: center; width: 57px; font-size: 13px;">' . (isset($peringkat[$alt['id_alternatif']][$id_user]) ? $peringkat[$alt['id_alternatif']][$id_user] : '-') . '</td>';
         }
 
         // Tambahkan kolom Hasil Akhir, Kelompok, dan Akumulasi Predikat
-        $html .= '<td style="text-align: center;">' . number_format($nilai_akhir[$alt['id_alternatif']], 3) . '</td>
-                          <td style="text-align: center; width: 55px;">' . getKelompok(number_format($nilai_akhir[$alt['id_alternatif']], 3)) . '</td>
-                          <td style="text-align: center; width: 95px;">' . $akumulasi_predikat[$alt['id_alternatif']] . '</td>
+        $html .= '<td style="text-align: center; font-size: 11px;">' . number_format($nilai_akhir[$alt['id_alternatif']], 3) . '</td>
+                          <td style="text-align: center; width: 55px; font-size: 11px;">' . getKelompok(number_format($nilai_akhir[$alt['id_alternatif']], 3)) . '</td>
+                          <td style="text-align: center; width: 95px; font-size: 13px; font-weight: bold;">' . $akumulasi_predikat[$alt['id_alternatif']] . '</td>
                       </tr>';
     }
     $html .= '</tbody></table>';
@@ -207,7 +207,7 @@ $pdf->SetFont('helvetica', '', 9); // Font default untuk konten lainnya
                 $html_tanda_tangan .= '</tr><tr>';
             }
             $juri_number = $index + 1;
-            $html_tanda_tangan .= '<td style="width: 20%;">Juri ' . $juri_number . '<br><br><br><br>(' . htmlspecialchars($user['nama_lengkap']) . ')</td>';
+            $html_tanda_tangan .= '<td style="width: 20%; font-size: 13px;">Juri ' . $juri_number . '<br><br><br><br>(' . htmlspecialchars($user['nama_lengkap']) . ')</td>';
             $count++;
         }
 

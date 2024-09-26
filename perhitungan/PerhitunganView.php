@@ -92,7 +92,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['nama']) && $_SESSION['level'] !==
                 <div class="container-perhitungan">
                     <div class="card mt-4">
                         <div class="card-header fa-regular fa-rectangle-list">
-                            <span><b>Nilai asli untuk setiap perguruan tinggi</b></span>
+                            <span><b>Nilai asli untuk setiap paduan suara</b></span>
                         </div>
                         <div class="card-body">
                             <?php
@@ -103,7 +103,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['nama']) && $_SESSION['level'] !==
                                     <thead>
                                         <tr>
                                             <th style="text-align: center;">No</th>
-                                            <th style="text-align: center;">Nama Perguruan Tinggi</th>
+                                            <th style="text-align: center;">Nama Paduan Suara</th>
                                             <th style="text-align: center; width: 300px;">Materi Penilaian</th>
                                             <?php
                                             $nomor = 1;
@@ -179,7 +179,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['nama']) && $_SESSION['level'] !==
                                 </table>
                             <?php else : ?>
                                 <div class="alert alert-warning" role="alert">
-                                    Tidak ada nilai untuk setiap perguruan tinggi.
+                                    Tidak ada nilai untuk setiap paduan suara.
                                 </div>
                             <?php endif; ?>
                         </div>
@@ -191,7 +191,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['nama']) && $_SESSION['level'] !==
                 <div class="container-perhitungan">
                     <div class="card mt-4">
                         <div class="card-header fa-regular fa-rectangle-list">
-                            <span><b>Nilai berbobot untuk setiap perguruan tinggi</b></span>
+                            <span><b>Nilai berbobot untuk setiap paduan suara</b></span>
                         </div>
                         <div class="card-body">
 
@@ -202,7 +202,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['nama']) && $_SESSION['level'] !==
                                     <thead>
                                         <tr>
                                             <th style="text-align: center;">No</th>
-                                            <th style="text-align: center;">Nama Perguruan Tinggi</th>
+                                            <th style="text-align: center;">Nama Paduan Suara</th>
                                             <th style="text-align: center; width: 300px;">Materi Penilaian</th>
                                             <?php $nomor = 1; ?>
                                             <?php foreach ($kriteria as $kriteria_item) : ?>
@@ -304,7 +304,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['nama']) && $_SESSION['level'] !==
                                 </table>
                             <?php else : ?>
                                 <div class="alert alert-warning" role="alert">
-                                    Tidak ada nilai untuk setiap perguruan tinggi.
+                                    Tidak ada nilai untuk setiap paduan suara.
                                 </div>
                             <?php endif; ?>
                         </div>
@@ -327,7 +327,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['nama']) && $_SESSION['level'] !==
                                     <thead>
                                         <tr>
                                             <th style="text-align: center;">No</th>
-                                            <th style="text-align: center;">Nama Perguruan Tinggi</th>
+                                            <th style="text-align: center;">Nama Paduan Suara</th>
                                             <th style="text-align: center;">Nilai Akhir</th>
                                         </tr>
                                     </thead>
@@ -405,7 +405,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['nama']) && $_SESSION['level'] !==
                                 </table>
                             <?php else : ?>
                                 <div class="alert alert-warning" role="alert">
-                                    Tidak ada nilai untuk setiap perguruan tinggi.
+                                    Tidak ada nilai untuk setiap paduan suara.
                                 </div>
                             <?php endif; ?>
                         </div>
