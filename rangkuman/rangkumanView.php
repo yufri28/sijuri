@@ -89,10 +89,11 @@ if (isset($_SESSION['id']) && isset($_SESSION['nama'])) {
                                                     <td style="text-align: left;"><?= $alternatif_item['nama_alternatif'] ?></td>
                                                     <td style="text-align: center;"><?= $alternatif_item['nomor_urut'] ?></td>
                                                     <td style="text-align: center;">
-                                                        <button class="btn btn-info" data-bs-toggle="modal"
+                                                        <button class="custom-button btn" style="background-color: #5F9EA0; color: white;" data-bs-toggle="modal"
                                                             data-bs-target="#modalLihatKomentar<?= $alternatif_item['id_alternatif'] ?>">
                                                             <i class="fa fa-eye" aria-hidden="true"></i>
                                                         </button>
+
                                                         <button type="button" class="btn btn-success btnCetakData" data-id="<?= $alternatif_item['id_alternatif'] ?>">
                                                             <i class="fa-solid fa-print" aria-hidden="true"></i>
                                                         </button>
@@ -188,11 +189,24 @@ if (isset($_SESSION['id']) && isset($_SESSION['nama'])) {
         <script>
             new DataTable('#example');
         </script>
-<script>
-    $(document).ready(function() {
-        $(".btnCetakData").click(function() {
-            var idAlternatif = $(this).data("id");
-            window.location.href = "rangkumanCetak.php?id_alternatif=" + idAlternatif;
+        <script>
+            $(document).ready(function() {
+                $(".btnCetakData").click(function() {
+                    var idAlternatif = $(this).data("id");
+                    window.location.href = "rangkumanCetak.php?id_alternatif=" + idAlternatif;
+                });
+            });
+        </script>
+        <script>
+    const buttons = document.querySelectorAll('.custom-button');
+
+    buttons.forEach(button => {
+        button.addEventListener('mouseover', function() {
+            button.style.backgroundColor = '#5F9EA0;'; // Warna saat hover
+        });
+
+        button.addEventListener('mouseout', function() {
+            button.style.backgroundColor = '#5F9EA0;'; // Kembali ke warna awal
         });
     });
 </script>
