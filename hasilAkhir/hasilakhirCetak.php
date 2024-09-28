@@ -59,7 +59,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['nama'])) {
     $pdf->SetKeywords('TCPDF, tabel, hasil akhir');
 
     // Atur margin
-    $pdf->SetMargins(20, 20, 20);
+    $pdf->SetMargins(20, 20, 5);
     $pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
     $pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
 
@@ -109,18 +109,18 @@ if (isset($_SESSION['id']) && isset($_SESSION['nama'])) {
     $pdf->SetFont('helvetica', 'B', 12);
     $pdf->Cell(0, 10, 'Laporan Hasil Akhir Penilaian Lomba Paduan Suara Mahasiswa Nasional XVIII', 0, 0, 'C');
 
-// Tambahkan tanggal cetak di ujung kanan atas
-$tanggal = date('d F Y');
+    // Tambahkan tanggal cetak di ujung kanan atas
+    $tanggal = date('d F Y');
 
-// Mengatur posisi
-$pdf->SetXY(312 - $pdf->GetStringWidth('Tanggal: ' . $tanggal), 0);
+    // Mengatur posisi
+    $pdf->SetXY(312 - $pdf->GetStringWidth('Tanggal: ' . $tanggal), 0);
 
-// Mengatur font khusus untuk tanggal
-$pdf->SetFont('helvetica', '', 11);// Misalnya, menggunakan font "times" dengan italic dan ukuran 10
-$pdf->Cell(89, 10, 'Tanggal: ' . $tanggal, 0, 0, 'C');
+    // Mengatur font khusus untuk tanggal
+    $pdf->SetFont('helvetica', '', 11); // Misalnya, menggunakan font "times" dengan italic dan ukuran 10
+    $pdf->Cell(89, 10, 'Tanggal: ' . $tanggal, 0, 0, 'C');
 
-// Kembalikan font ke default setelah menampilkan tanggal
-$pdf->SetFont('helvetica', '', 9); // Font default untuk konten lainnya
+    // Kembalikan font ke default setelah menampilkan tanggal
+    $pdf->SetFont('helvetica', '', 9); // Font default untuk konten lainnya
 
 
     // Tambahkan garis di bawah judul dan teks, perpanjang ke kanan
