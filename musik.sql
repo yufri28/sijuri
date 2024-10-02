@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 25 Sep 2024 pada 17.13
+-- Waktu pembuatan: 02 Okt 2024 pada 19.59
 -- Versi server: 10.4.28-MariaDB
 -- Versi PHP: 8.0.28
 
@@ -30,49 +30,53 @@ SET time_zone = "+00:00";
 CREATE TABLE `alternatif` (
   `id_alternatif` int(11) NOT NULL,
   `nama_alternatif` varchar(200) NOT NULL,
+  `dirigen` varchar(200) NOT NULL,
   `nomor_urut` int(5) NOT NULL,
   `lagu_pertama` varchar(200) NOT NULL,
-  `lagu_kedua` varchar(200) NOT NULL
+  `durasi_pertama` varchar(100) NOT NULL,
+  `lagu_kedua` varchar(200) NOT NULL,
+  `durasi_kedua` varchar(100) NOT NULL,
+  `total_durasi` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data untuk tabel `alternatif`
 --
 
-INSERT INTO `alternatif` (`id_alternatif`, `nama_alternatif`, `nomor_urut`, `lagu_pertama`, `lagu_kedua`) VALUES
-(53, 'PSM Cantus Firmus - Universitas Sanata Dharma', 0, 'Blessed art Thou, O Lord / Sergei Rachmaninoff', 'Elijah Rock / Moses Hogan'),
-(54, 'PSM Laudate Choir - Universitas Timor', 0, 'God So Loved The World / John Stainer', 'Ain\'t Got Time to Die / Hall Johnson'),
-(55, 'PSM Vox Angelorum Choir - Universitas Kristen Indonesia Maluku', 0, 'Os Justi / Anton Bruckner ', 'I Got a Home in-a Dat Rock / Moses Hogan'),
-(56, 'PSM Solfeggio Choir - Universitas Negeri Medan', 0, 'Cantate Domino / Claudio Monteverdi', 'Elijah Rock / Moses Hogan'),
-(57, 'PSM Caritas Choral - Universitas Caritas Indonesia', 0, 'Locus Iste / Anton Bruckner', 'Ride On King Jesus / Stacey V. Gibbs'),
-(58, 'PSM Haleluya - Universitas Tadulako', 0, 'Cantate Domino / Hans Leo Hassler', 'Witness / Jack Halloran'),
-(59, 'PSM Universitas Palangka Raya', 0, 'Exsultate Deo / Alessandro Scarlatti', 'Rockin\' Jerusalem / Stacey V. Gibbs'),
-(60, 'PSM Universitas Musamus Merauke', 0, 'Os Justi / Anton Bruckner', 'Great God Almighty / Stacey V. Gibbs'),
-(61, 'PSM Qui Bene Cantat - Universitas Tanjungpura', 0, 'Virga Jesse / Anton Bruckner', 'My God is a Rock / Ken Berg'),
-(62, 'PSM Universitas Atma Jaya Yogyakarta', 0, 'Christus Factus Est / Anton Bruckner', 'My God is a Rock / Ken Berg'),
-(63, 'PSM Hotumese Choir - Universitas Pattimura', 0, 'Virga Jesse Floruit / Anton Bruckner', 'Daniel, Servant of The Lord / Stacey V. Gibbs'),
-(64, 'PSM Bella Cantare Choir - Universitas Nusa Cendana', 0, 'Richte Mich, Gott / Felix Mendelssohn B.', 'Elijah Rock / Moses Hogan'),
-(65, 'PSM Voca Erudita - Universitas Sebelas Maret', 0, 'Die Himmel Erzahlen die Ehre Gottes / Heinrich Schütz', 'Wade in de Water / Allen Koepke'),
-(66, 'PSMP ULM - Universitas Lambung Mangkura', 0, 'Ave Maria / Anton Bruckner', 'Joshua / Rollo Dilworth'),
-(67, 'PSM Universitas Brawijaya', 0, 'Die Himmel erzählen die Ehre Gottes / Heinrich Schütz', 'My Soul’s Been Anhored in the Lord / Moses Hogan'),
-(68, 'PSM Universitas Cenderawasih', 0, 'Denn Er hat seinen Engeln befohlen / Felix Mendelssohn Bartholdy', 'Wade in de Water / Allen Koepke'),
-(69, 'PSM Lelemuku Choir - Universitas Lelemuku Saumlaki', 0, 'Super flumina Babilonis / Giovanni Pierluigi da Palestrina', 'Great God Almighty / Stacey V. Gibbs'),
-(70, 'PSM Uniwira - Universitas Katolik Widya Mandira Kupang', 0, 'Ehre Sei Gott in der Hohe / Felix Mendelssohn', 'I Can Tell / Moses Hogan'),
-(71, 'PSM Evangelist Universitas Kristen Artha Wacana Kupang', 0, 'Angelus Domini descendit / Josef Rheinberger', 'Great God Almighty / Stacey V. Gibbs'),
-(72, 'PSM Voice of SWCU - Universitas Kristen Satya Wacana', 0, 'Lux Aeterna / Edward Elgar, arr. John Cameron', 'Joshua Fought the Battle of Jericho / Jonathan Rathbone'),
-(73, 'PSM Universitas Negeri Yogyakarta', 0, 'Ehre sei Gott in der Höhe / Felix Mendelssohn', 'Hold On / Moses Hogan'),
-(74, 'PSM Psallo - Universitas Negeri Surabaya', 0, 'Wunshcet Jerussalem Gluck / Gottfried A. Homilius', 'My God Is a Rock / Stacey V. Gibbs'),
-(75, 'PSM MCUC - Universitas Kristen Maranatha', 0, 'Sing Joyfully / William Byrd', 'John the Revelator / Paul Caldwell & Sean Ivory'),
-(76, 'PSM Gita Choir - Sekolah Tinggi Filsafat Jaffray Makassar', 0, 'Locus Iste / Anton Bruckner', 'Great God Almigthy / Stacey V. Gibbs'),
-(77, 'PSM Pinisi Choir - Universitas Negeri Makassar', 0, 'Exultate Deo / Giovani Pierluigi da Palestrina', 'Hold On / Moses Hogan'),
-(78, 'PSM UBAYA Choir - Universitas Surabaya', 0, 'Cantate Domino / J. P. Sweelinck', 'Way Over in Beulah Land / Stacey V. Gibbs'),
-(79, 'PSM UKIT - Universitas Kristen Indonesia Tomohon', 0, 'Christus Factus Est / Anton Bruckner', 'Rockin’ Jerusalem / Stacey V. Gibbs'),
-(80, 'PSM UKM UNSRAT - Universitas Sam Ratulangi', 0, ' Os Justi / Anton Bruckner', 'Soon I Will Be Done / Stacey V. Gibbs'),
-(81, 'PSM ULOS - Universitas Sumatera Utara', 0, 'Ehre sei Gott in der Höhe / Felix Mendelssohn', 'Didn\'t My Lord Deliver Daniel / Aaron Dale'),
-(82, 'PSM UNIMA - Universitas Negeri Manado', 0, 'Richte Mich, Gott / Felix Mendelssohn B.', 'Swing Low, Sweet Chariot/ David L. Brunner'),
-(83, 'PSM Universitas Bina Nusantara', 0, 'Abendlied / Josef Rheinberger', 'Ride On King Jesus / Moses Hogan'),
-(84, 'PSM St. Paul Choir - Universitas Katolik Indonesia Santu Paulus Ruteng', 0, 'Jubilate Deo / Giovanni Gabrieli', 'Ain\'t-a That Good News / Stacey V. Gibbs'),
-(85, 'PSM Universitas Diponegoro', 0, 'Dixit Maria / Hans Leo Hassler', 'My God Is A Rock / Ken Berg');
+INSERT INTO `alternatif` (`id_alternatif`, `nama_alternatif`, `dirigen`, `nomor_urut`, `lagu_pertama`, `durasi_pertama`, `lagu_kedua`, `durasi_kedua`, `total_durasi`) VALUES
+(53, 'PSM Universitas Sanata Dharma', 'Setiawan Ezra Bennova', 28, 'Elijah Rock / Moses Hogan', '00:00', 'Blessed art Thou, O Lord / Sergei Rachmaninoff', '00:00', '00:00'),
+(54, 'PSM Universitas Timor', 'Bernad Marianus Deni Akoit', 31, 'God So Loved The World / John Stainer', '00:00', 'Ain\'t Got Time to Die / Hall Johnson', '00:00', '00:00'),
+(55, 'PSM Universitas Kristen Indonesia Maluku', 'Dusthyn G. F. X Kadju', 26, 'Os Justi / Anton Bruckner ', '00:00', 'I Got a Home in-a Dat Rock / Moses Hogan', '00:00', '00:00'),
+(56, 'PSM Universitas Negeri Medan', 'Tulus Nathanael Tarigan', 11, 'Cantate Domino / Claudio Monteverdi', '00:00', 'Elijah Rock / Moses Hogan', '00:00', '00:00'),
+(57, 'PSM Universitas Caritas Indonesia', 'Brianus Dopo Nusa', 33, 'Locus Iste / Anton Bruckner', '00:00', 'Ride On King Jesus / Stacey V. Gibbs', '00:00', '00:00'),
+(58, 'PSM Universitas Tadulako', 'Prischal Rianto Njaya', 27, 'Cantate Domino / Hans Leo Hassler', '00:00', 'Witness / Jack Halloran', '00:00', '00:00'),
+(59, 'PSM Universitas Palangka Raya', 'Imanuel', 22, 'Exsultate Deo / Alessandro Scarlatti', '00:00', 'Rockin\' Jerusalem / Stacey V. Gibbs', '00:00', '00:00'),
+(60, 'PSM Universitas Musamus Merauke', 'Nurlela Pandiangan', 23, 'Os Justi / Anton Bruckner', '00:00', 'Great God Almighty / Stacey V. Gibbs', '00:00', '00:00'),
+(61, 'PSM Universitas Tanjungpura', 'Cristi Novia Gulatri', 21, 'Virga Jesse / Anton Bruckner', '00:00', 'My God is a Rock / Ken Berg', '00:00', '00:00'),
+(62, 'PSM Universitas Atma Jaya Yogyakarta', 'Ignasius Axel Cokrodiharjo', 19, 'Christus Factus Est / Anton Bruckner', '00:00', 'My God is a Rock / Ken Berg', '00:00', '00:00'),
+(63, 'PSM Universitas Pattimura', ' Costantinus Varano Batmanlussy', 3, 'Virga Jesse Floruit / Anton Bruckner', '00:00', 'Daniel, Servant of The Lord / Stacey V. Gibbs', '00:00', '00:00'),
+(64, 'PSM Universitas Nusa Cendana', 'Salviani Sarita Natol', 25, 'Richte Mich, Gott / Felix Mendelssohn B.', '00:00', 'Elijah Rock / Moses Hogan', '00:00', '00:00'),
+(65, 'PSM Universitas Sebelas Maret', 'Dionisius Indra Raditya', 29, 'Die Himmel Erzahlen die Ehre Gottes / Heinrich Schütz', '00:00', 'Wade in de Water / Allen Koepke', '00:00', '00:00'),
+(66, 'PSM Universitas Lambung Mangkurat', 'Paula Carolina Natalia', 8, 'Joshua / Rollo Dilworth', '00:00', 'Ave Maria / Anton Bruckner', '00:00', '00:00'),
+(67, 'PSM Universitas Brawijaya', 'Librina Rosario', 15, 'Die Himmel erzählen die Ehre Gottes / Heinrich Schütz', '00:00', 'My Soul’s Been Anhored in the Lord / Moses Hogan', '00:00', '00:00'),
+(68, 'PSM Universitas Cenderawasih', 'Fridolin Sasria Sulu', 4, 'Denn Er hat seinen Engeln befohlen / Felix Mendelssohn Bartholdy', '00:00', 'Wade in de Water / Allen Koepke', '00:00', '00:00'),
+(69, 'PSM Universitas Lelemuku Saumlaki', 'Marta Nanaryain', 1, 'Super flumina Babilonis / Giovanni Pierluigi da Palestrina', '00:00', 'Great God Almighty / Stacey V. Gibbs', '00:00', '00:00'),
+(70, 'PSM Universitas Katolik Widya Mandira Kupang', 'Dominikus Dionisius T. Tukan', 17, 'Ehre Sei Gott in der Hohe / Felix Mendelssohn', '00:00', 'I Can Tell / Moses Hogan', '00:00', '00:00'),
+(71, 'PSM Universitas Kristen Artha Wacana', 'Putra Agung Setyawan Pono & Adventhino Petrus Neisessalem Saudale', 5, 'Angelus Domini descendit / Josef Rheinberger', '00:00', 'Great God Almighty / Stacey V. Gibbs', '00:00', '00:00'),
+(72, 'PSM Universitas Kristen Satya Wacana', 'Gloria Clara Fangohoy', 10, 'Lux Aeterna / Edward Elgar, arr. John Cameron', '00:00', 'Joshua Fought the Battle of Jericho / Jonathan Rathbone', '00:00', '00:00'),
+(73, 'PSM Universitas Negeri Yogyakarta', 'Brigita Silvia Perfectiani Indra Haristi', 14, 'Ehre sei Gott in der Höhe / Felix Mendelssohn', '00:00', 'Hold On / Moses Hogan', '00:00', '00:00'),
+(74, 'PSM Universitas Negeri Surabaya', 'Rakaryan Wiryawisesa', 16, 'Wunshcet Jerussalem Gluck / Gottfried A. Homilius', '00:00', 'My God Is a Rock / Stacey V. Gibbs', '00:00', '00:00'),
+(75, 'PSM Universitas Kristen Maranatha', 'Vivaldi immanuel Pardede', 2, 'Sing Joyfully / William Byrd', '00:00', 'John the Revelator / Paul Caldwell & Sean Ivory', '00:00', '00:00'),
+(77, 'PSM Universitas Negeri Makassar', 'Muhammad Zaky Athari Ihsan', 20, 'Exultate Deo / Giovani Pierluigi da Palestrina', '00:00', 'Hold On / Moses Hogan', '00:00', '00:00'),
+(78, 'PSM Universitas Surabaya', 'Darrent Kristian Utama', 6, 'Cantate Domino / J. P. Sweelinck', '00:00', 'Way Over in Beulah Land / Stacey V. Gibbs', '00:00', '00:00'),
+(79, 'PSM Universitas Kristen Indonesia Tomohon', 'Risky A.H. Lengkong', 30, 'Christus Factus Est / Anton Bruckner', '00:00', 'Rockin’ Jerusalem / Stacey V. Gibbs', '00:00', '00:00'),
+(80, 'PSM Universitas Sam Ratulangi', 'Amadeo Parmadi', 13, ' Os Justi / Anton Bruckner', '00:00', 'Soon I Will Be Done / Stacey V. Gibbs', '00:00', '00:00'),
+(81, 'PSM Universitas Sumatera Utara', 'Billy Joel Hagai Simbolon', 9, 'Ehre sei Gott in der Höhe / Felix Mendelssohn', '00:00', 'Didn\'t My Lord Deliver Daniel / Aaron Dale', '00:00', '00:00'),
+(82, 'PSM Universitas Negeri Manado', 'Marcello Denny Ohy', 18, 'Richte Mich, Gott / Felix Mendelssohn B.', '00:00', 'Swing Low, Sweet Chariot/ David L. Brunner', '00:00', '00:00'),
+(83, 'PSM Universitas Bina Nusantara', 'Andy Wijaya', 24, 'Abendlied / Josef Rheinberger', '00:00', 'Ride On King Jesus / Moses Hogan', '00:00', '00:00'),
+(84, 'PSM Universitas Katolik Indonesia Santu Paulus Ruteng', 'Konradus Pian', 32, 'Jubilate Deo / Giovanni Gabrieli', '00:00', 'Ain\'t-a That Good News / Stacey V. Gibbs', '00:00', '00:00'),
+(85, 'PSM Universitas Diponegoro', 'Widi Nugraheni Riring Danurwinda', 12, 'Dixit Maria / Hans Leo Hassler', '00:00', 'My God Is A Rock / Ken Berg', '00:00', '00:00'),
+(86, 'PSM Universitas HKBP Nommensen', 'Hartati Simanjuntak', 7, 'Exultate Deo / Giovani Pierluigi da Palestrina', '00:00', 'Way Over In Beulah Lan\'/ Stacey V. Gibbs', '00:00', '00:00');
 
 -- --------------------------------------------------------
 
@@ -131,7 +135,7 @@ CREATE TABLE `subkriteria` (
 INSERT INTO `subkriteria` (`subkriteria_id`, `subkriteria_keterangan`, `subkriteria_nilai`) VALUES
 (1, 'Intonasi', '25'),
 (2, 'Kualitas suara', '25'),
-(3, 'Kesesuaikan dengan Partitur', '25'),
+(3, 'Kesesuaian dengan Partitur', '25'),
 (4, 'Penampilan Keseluruhan', '25');
 
 -- --------------------------------------------------------
@@ -155,11 +159,11 @@ CREATE TABLE `user` (
 
 INSERT INTO `user` (`id`, `nama`, `nama_lengkap`, `email`, `katasandi`, `level`) VALUES
 (1, 'admin', 'Admin sijuri', 'adminsijuri123@gmail.com', '202cb962ac59075b964b07152d234b70', 'admin'),
-(2, 'jurisatu', 'Drs. Agastya Rama Listya, MSM, Ph.D', 'jurisatu@gmail.com', '88c7d1e4ad2c1feb793dcfe64d7fd721', 'juri'),
-(4, 'juridua', 'Ardelia Padma Sawitri', 'juridua@gmail.com', '88c7d1e4ad2c1feb793dcfe64d7fd721', 'juri'),
-(5, 'juritiga', 'Budi Susanto Yohanes', 'juritiga@gmail.com', '88c7d1e4ad2c1feb793dcfe64d7fd721', 'juri'),
-(6, 'juriempat', 'Ega O.  Azarya', 'juriempat@gmail.com', '88c7d1e4ad2c1feb793dcfe64d7fd721', 'juri'),
-(9, 'jurilima', 'Jessica Fedora Amadea', 'jurilima@gmail.com', '88c7d1e4ad2c1feb793dcfe64d7fd721', 'juri');
+(2, 'ketuajuri', 'Ega O.  Azarya', 'ketuajuri@gmail.com', '88c7d1e4ad2c1feb793dcfe64d7fd721', 'juri'),
+(4, 'anggotasatu', 'Drs. Agastya Rama Listya, MSM, Ph.D', 'anggotasatu@gmail.com', '7989b5025e2a3aa84c8437c302aa5025', 'juri'),
+(5, 'anggotadua', 'Ardelia Padma Sawitri', 'anggotadua@gmail.com', 'fb69875462aafa905bdf430f3d2588e9', 'juri'),
+(6, 'anggotatiga', 'Budi Susanto Yohanes', 'anggotatiga@gmail.com', '14f07e56134aebe19d9a5035701f7d45', 'juri'),
+(9, 'anggotaempat', 'Jessica Fedora Amadea', 'anggotaempat@gmail.com', '2a2e42870b96810b4ccd61afcec792e4', 'juri');
 
 --
 -- Indexes for dumped tables
@@ -207,7 +211,7 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT untuk tabel `alternatif`
 --
 ALTER TABLE `alternatif`
-  MODIFY `id_alternatif` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=86;
+  MODIFY `id_alternatif` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=97;
 
 --
 -- AUTO_INCREMENT untuk tabel `kriteria`
@@ -219,7 +223,7 @@ ALTER TABLE `kriteria`
 -- AUTO_INCREMENT untuk tabel `penilaian`
 --
 ALTER TABLE `penilaian`
-  MODIFY `id_penilaian` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=81;
+  MODIFY `id_penilaian` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=409;
 
 --
 -- AUTO_INCREMENT untuk tabel `subkriteria`
