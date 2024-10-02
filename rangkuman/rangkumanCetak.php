@@ -6,7 +6,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['nama'])) {
     $koneksi = connectDB();
 
     require_once "../perhitungan/perhitunganAksi.php";
-    
+
     // Mendapatkan data user (juri)
     $users = getUser($koneksi);
 
@@ -159,7 +159,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['nama'])) {
     }
 
     if (isset($komentar_per_kriteria[4])) { // Kriteria 4: Lagu Kedua
-        $pdf->SetXY(20, $pdf->GetY() + 2);
+        $pdf->SetXY(20, $pdf->GetY() + 0);
 
         // Tampilkan judul "Lagu Kedua" dengan huruf tebal dan di tengah
         $pdf->SetFont('helvetica', 'B', 15); // Mengatur font menjadi helvetica, Bold, ukuran 12
@@ -198,37 +198,44 @@ if (isset($_SESSION['id']) && isset($_SESSION['nama'])) {
     // Tabel tanda tangan tanpa garis
     $pdf->SetFont('helvetica', '', 11);
     $pdf->Ln(5); // Jarak sebelum tabel tanda tangan
+// Cek apakah $users ada isinya
+if (!empty($users)) {
+    // Membuat HTML untuk tabel tanda tangan
+    $html_tanda_tangan = '<table cellpadding="5" cellspacing="0" style="width: 100%; text-align: center;">
+                <tr>';
 
-    // Cek apakah $juri_list ada isinya
-    if (!empty($users)) {
-        // Membuat HTML untuk tabel tanda tangan
-        $html_tanda_tangan = '<table cellpadding="5" cellspacing="0" style="width: 100%; text-align: center;">
-                    <tr>';
-
-        // Menambahkan juri ke tabel
-        $count = 0;
-        foreach ($users as $index => $user) {
-            // Jika sudah ada 5 juri di baris, buat baris baru
-            if ($index % 5 == 0 && $index > 0) {
-                $html_tanda_tangan .= '</tr><tr>';
-            }
-            $juri_number = $index + 1;
-            $html_tanda_tangan .= '<td style="width: 20%; font-size: 13px;">Juri ' . $juri_number . '<br><br><br><br>(' . htmlspecialchars($user['nama_lengkap']) . ')</td>';
-            $count++;
+    // Menambahkan juri ke tabel
+    $count = 0;
+    foreach ($users as $index => $user) {
+        // Jika sudah ada 5 juri di baris, buat baris baru
+        if ($index % 5 == 0 && $index > 0) {
+            $html_tanda_tangan .= '</tr><tr>';
         }
 
-        // Menambahkan sel kosong jika baris terakhir kurang dari 5 juri
-        if ($count % 5 != 0) {
-            $html_tanda_tangan .= str_repeat('<td style="width: 20%;"></td>', 5 - ($count % 5));
+        // Cek apakah user adalah "ketuajuri"
+        if ($user['nama'] === 'ketuajuri') {
+            $juri_title = 'Ketua Juri';
+        } else {
+            $juri_title = 'Anggota Juri ' . ($index);
         }
 
-        $html_tanda_tangan .= '</tr></table>';
-
-        // Tulis tabel tanda tangan ke halaman PDF
-        $pdf->writeHTML($html_tanda_tangan, true, false, true, false, '');
-    } else {
-        $pdf->Cell(0, 10, 'Tidak ada juri yang terdaftar.', 0, 1, 'C');
+        $html_tanda_tangan .= '<td style="width: 20%; font-size: 13px;">' . $juri_title . '<br><br><br><br>(' . htmlspecialchars($user['nama_lengkap']) . ')</td>';
+        $count++;
     }
+
+    // Menambahkan sel kosong jika baris terakhir kurang dari 5 juri
+    if ($count % 5 != 0) {
+        $html_tanda_tangan .= str_repeat('<td style="width: 20%;"></td>', 5 - ($count % 5));
+    }
+
+    $html_tanda_tangan .= '</tr></table>';
+
+    // Tulis tabel tanda tangan ke halaman PDF
+    $pdf->writeHTML($html_tanda_tangan, true, false, true, false, '');
+} else {
+    $pdf->Cell(0, 10, 'Tidak ada juri yang terdaftar.', 0, 1, 'C');
+}
+
 
     // Mengeluarkan dokumen PDF
     $pdf->Output('Rangkuman Komentar Juri terhadap ' . $nama_alternatif . '.pdf', 'I');

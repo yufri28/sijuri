@@ -132,60 +132,72 @@ if (isset($_SESSION['id']) && isset($_SESSION['nama'])) {
 
     // Tambahkan tabel
     $html = '<table border="1" cellpadding="5">
-                    <thead>
-                        <tr>
-                            <th style="text-align: center; font-weight: bold; width: 23px;">No</th>
-                            <th style="text-align: center; font-weight: bold; width: 103px;">Nama Paduan Suara</th>';
+<thead>
+    <tr>
+        <th rowspan="2" style="text-align: center; vertical-align: middle; font-weight: bold; width: 23px;">No</th>
+        <th rowspan="2" style="text-align: center; font-weight: bold; width: 103px;">Nama Paduan Suara</th>';
 
-    // Tambahkan kolom untuk setiap user
+    // Tambahkan kolom header untuk setiap juri
     foreach ($users as $index => $user) {
-        $html .= '<th style="text-align: center; font-weight: bold; width: 57px;" title="Nilai dari ' . $user['nama_lengkap'] . '">Nilai Juri ' . ($index + 1) . '</th>
-                  <th style="text-align: center; font-weight: bold; width: 57px;">Peringkat</th>';
+        $juri_title = ($user['nama'] === 'ketuajuri') ? 'Ketua Juri' : 'Anggota Juri ' . ($index);
+        $html .= '<th colspan="2" style="text-align: center; font-weight: bold; width: 114px;" title="Nilai dari ' . $user['nama_lengkap'] . '">' . $juri_title . '</th>';
     }
 
-    $html .= '<th style="text-align: center; font-weight: bold;">Hasil Akhir</th>
-                      <th style="text-align: center; font-weight: bold; width: 55px;">Kelompok</th>
-                      <th style="text-align: center; font-weight: bold; width: 95px;">Akumulasi Predikat</th>
-                    </tr>
-                  </thead>
-                  <tbody>';
+    $html .= '<th rowspan="2" style="text-align: center; font-weight: bold;">Hasil Akhir</th>
+  <th rowspan="2" style="text-align: center; font-weight: bold; width: 55px;">Kelompok</th>
+  <th rowspan="2" style="text-align: center; font-weight: bold; width: 95px;">Akumulasi Predikat</th>
+</tr>
+<tr>';
+
+    // Tambahkan baris kedua untuk "Nilai" dan "Peringkat"
+    foreach ($users as $user) {
+        $html .= '<th style="text-align: center; font-weight: bold; width: 57px;">Nilai</th>
+      <th style="text-align: center; font-weight: bold; width: 57px;">Peringkat</th>';
+    }
+
+    $html .= '</tr>
+</thead>
+<tbody>';
 
     // Isi tabel
     $no = 1;
     foreach ($alternatif as $index => $alt) {
         $html .= '<tr>
-                <td style="text-align: center; width: 23px;">' . $no++ . '</td>
-                <td style="text-align: left; width: 103px; font-size: 11px;">' . $alt['nama_alternatif'] . '</td>';
+    <td style="text-align: center; width: 23px;">' . $no++ . '</td>
+    <td style="text-align: left; width: 103px; font-size: 11px;">' . $alt['nama_alternatif'] . '</td>';
 
         // Loop untuk menambahkan nilai dan peringkat dari setiap user
         foreach ($users as $user) {
             $id_user = $user['id'];
             $sql_nilai = "SELECT nilai_akhir FROM penilaian 
-                      WHERE id_alternatif = {$alt['id_alternatif']} 
-                      AND id = $id_user";
+              WHERE id_alternatif = {$alt['id_alternatif']} 
+              AND id = $id_user";
             $result_nilai = $koneksi->query($sql_nilai);
             $nilai = ($result_nilai && $result_nilai->num_rows > 0) ? number_format($result_nilai->fetch_assoc()['nilai_akhir'], 3) : '-';
 
             $html .= '<td style="text-align: center; width: 57px; font-size: 11px;">';
             $html .= $nilai != '-' ? $nilai : '<div style="color: red;">Belum diberikan nilai</div>';
             $html .= '</td>';
+
             // Peringkat
             $html .= '<td style="text-align: center; width: 57px; font-size: 13px;">' . (isset($peringkat[$alt['id_alternatif']][$id_user]) ? $peringkat[$alt['id_alternatif']][$id_user] : '-') . '</td>';
         }
 
         // Tambahkan kolom Hasil Akhir, Kelompok, dan Akumulasi Predikat
         $html .= '<td style="text-align: center; font-size: 11px;">' . number_format($nilai_akhir[$alt['id_alternatif']], 3) . '</td>
-                          <td style="text-align: center; width: 55px; font-size: 11px;">' . getKelompok(number_format($nilai_akhir[$alt['id_alternatif']], 3)) . '</td>
-                          <td style="text-align: center; width: 95px; font-size: 13px; font-weight: bold;">' . $akumulasi_predikat[$alt['id_alternatif']] . '</td>
-                      </tr>';
+      <td style="text-align: center; width: 55px; font-size: 11px;">' . getKelompok(number_format($nilai_akhir[$alt['id_alternatif']], 3)) . '</td>
+      <td style="text-align: center; width: 95px; font-size: 13px; font-weight: bold;">' . $akumulasi_predikat[$alt['id_alternatif']] . '</td>
+  </tr>';
     }
+
     $html .= '</tbody></table>';
 
     // Tulis tabel ke halaman
     $pdf->writeHTML($html, true, false, true, false, '');
 
+
     // Menambahkan bagian tanda tangan
-    $pdf->Ln(5); // Jarak sebelum bagian tanda tangan
+    $pdf->Ln(10); // Jarak sebelum bagian tanda tangan
     $pdf->SetFont('helvetica', 'B', 12);
     $pdf->Cell(0, 10, 'Mengetahui:', 0, 1, 'C');
 
@@ -206,10 +218,18 @@ if (isset($_SESSION['id']) && isset($_SESSION['nama'])) {
             if ($index % 5 == 0 && $index > 0) {
                 $html_tanda_tangan .= '</tr><tr>';
             }
-            $juri_number = $index + 1;
-            $html_tanda_tangan .= '<td style="width: 20%; font-size: 13px;">Juri ' . $juri_number . '<br><br><br><br>(' . htmlspecialchars($user['nama_lengkap']) . ')</td>';
+
+            // Cek apakah user adalah "ketuajuri"
+            if ($user['nama'] === 'ketuajuri') {
+                $juri_title = 'Ketua Juri';
+            } else {
+                $juri_title = 'Anggota Juri ' . ($index);
+            }
+
+            $html_tanda_tangan .= '<td style="width: 20%; font-size: 13px;">' . $juri_title . '<br><br><br><br>(' . htmlspecialchars($user['nama_lengkap']) . ')</td>';
             $count++;
         }
+
 
         // Menambahkan sel kosong jika baris terakhir kurang dari 5 juri
         if ($count % 5 != 0) {

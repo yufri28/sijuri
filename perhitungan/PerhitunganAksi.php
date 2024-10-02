@@ -2,7 +2,7 @@
 // Fungsi untuk mendapatkan data user (juri)
 function getUser($koneksi)
 {
-    $sql = "SELECT id, nama_lengkap FROM user WHERE level = 'juri'";
+    $sql = "SELECT id, nama, nama_lengkap FROM user WHERE level = 'juri'";
     $result = $koneksi->query($sql);
 
     if ($result && $result->num_rows > 0) {
@@ -10,6 +10,7 @@ function getUser($koneksi)
         while ($row = $result->fetch_assoc()) {
             $users[] = [
                 'id' => $row['id'],
+                'nama' => $row['nama'],
                 'nama_lengkap' => $row['nama_lengkap'],
             ];
         }

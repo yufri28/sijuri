@@ -69,10 +69,11 @@ if (isset($_SESSION['id']) && isset($_SESSION['nama'])) {
         <!-- Chart -->
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
         <style>
-        .home-section {
-            background: none; /* Hilangkan background */
-        }
-            </style>
+            .home-section {
+                background: none;
+                /* Hilangkan background */
+            }
+        </style>
     </head>
 
     <body class="custom-bgg">
@@ -99,7 +100,12 @@ if (isset($_SESSION['id']) && isset($_SESSION['nama'])) {
                                                 <th style="text-align: center; width: 50px;">Nama Paduan Suara</th>
                                                 <?php foreach ($users as $index => $user) : ?>
                                                     <th style="text-align: center;" title="Nilai dari <?= $user['nama_lengkap'] ?>">
-                                                        Nilai Juri <?= $index + 1 ?></th>
+                                                        <?php if ($user['nama'] === 'ketuajuri') : ?>
+                                                            Ketua Juri
+                                                        <?php else : ?>
+                                                            Anggota Juri <?= $index ?>
+                                                        <?php endif; ?>
+                                                    </th>
                                                     <th style="text-align: center;">Peringkat</th>
                                                 <?php endforeach; ?>
                                                 <th style="text-align: center;" title="Gabungan nilai semua juri">Hasil Akhir
@@ -124,7 +130,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['nama'])) {
                                                             <?php if ($nilai != '-') : ?>
                                                                 <?= number_format($nilai, 3); ?>
                                                             <?php else : ?>
-                                                                <div style= "width:100px;" class="alert alert-danger alert-dismissible fade show py-1 px-2 m-0"
+                                                                <div style="width:100px;" class="alert alert-danger alert-dismissible fade show py-1 px-2 m-0"
                                                                     role="alert" style="font-size: 0.8rem;">
                                                                     Belum diberikan nilai
                                                                 </div>

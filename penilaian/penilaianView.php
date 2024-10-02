@@ -301,7 +301,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['nama']) && $_SESSION['level'] !==
                                                                                     <hr>
                                                                                     <!-- Tambahkan textarea untuk komentar -->
                                                                                     <label for="komentar_<?= htmlspecialchars($id_kriteria) ?>" class="form-label text-center d-block">Komentar:</label>
-                                                                                    <textarea class="form-control" name="komentar[<?= htmlspecialchars($id_kriteria) ?>]" id="komentar_<?= htmlspecialchars($id_kriteria) ?>" rows="3" placeholder="Memberikan komentar untuk lagu ini" oninvalid="this.setCustomValidity('Silakan memberikan komentar untuk lagu ini')" onchange="try{setCustomValidity('')}catch(e){}" required></textarea>
+                                                                                    <textarea class="form-control" name="komentar[<?= htmlspecialchars($id_kriteria) ?>]" id="komentar_<?= htmlspecialchars($id_kriteria) ?>" rows="3" placeholder="Memberikan komentar untuk lagu ini" oninvalid="this.setCustomValidity('Silakan memberikan komentar untuk lagu ini')" onchange="try{setCustomValidity('')}catch(e){}"></textarea>
                                                                                 </div>
                                                                                 <div class="col-md-12">
                                                                                     <hr>
